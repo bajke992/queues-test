@@ -113,7 +113,9 @@ class HomeController extends Controller
             Session::put('numberOfPages', $numberOfPages);
         }
 
-        $matchHandler->handle($responseBody->matches, $responseBody->gamesBySport->{1}, $this->matchRepo, $this->oddRepo, $this->matchIdRepo);
+        if(isset($responseBody->gamesBySport->{1})) {
+            $matchHandler->handle($responseBody->matches, $responseBody->gamesBySport->{1}, $this->matchRepo, $this->oddRepo, $this->matchIdRepo);
+        }
 
         if($currentPage !== $numberOfPages) {
             for($page = $currentPage + 1; $page <= $numberOfPages; $page++) {
