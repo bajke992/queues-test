@@ -11,10 +11,19 @@
 |
 */
 
-Route::get('/', function () {
-    	Queue::push(function($job) {
-		Log::info('Queue: '.date('Y-m-d'));
-		$job->delete();
-	});
-	return 'Done';
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+Route::auth();
+
+Route::get('/',['as' => 'live', 'uses' => 'HomeController@live']);
+Route::get('finished',['as' => 'home', 'uses' => 'HomeController@index']);
+Route::get('ready',['as' => 'ready', 'uses' => 'HomeController@ready']);
+
+Route::group(['prefix' => 'ajax'], function () {
+    Route::get('offer', ['as' => 'offer', 'uses' => 'HomeController@offerRequest']);
+    Route::get('ready', ['as' => 'offer.ready', 'uses' => 'HomeController@readyRequest']);
+    Route::post('finished', ['as' => 'finished', 'uses' => 'HomeController@postFinished']);
 });
+
