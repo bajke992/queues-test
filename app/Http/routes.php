@@ -27,3 +27,11 @@ Route::group(['prefix' => 'ajax'], function () {
     Route::post('finished', ['as' => 'finished', 'uses' => 'HomeController@postFinished']);
 });
 
+Route::get('queue', function () {
+    Queue::push(function($job){
+
+        Log::info('asdf: '.date('Y-m-d H:i:s'));
+
+        $job->delete();
+    });
+});
