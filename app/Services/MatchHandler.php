@@ -1,5 +1,6 @@
 <?php namespace App\Services;
 
+use App\Jobs\HandleMatch;
 use App\Models\Match;
 use App\Models\MatchId;
 use App\Models\Odd;
@@ -36,25 +37,29 @@ class MatchHandler
             $sample = $matchRepo->matchOdds(array_slice($odds, 0, 6));
 //            var_dump($odds);
 //            var_dump($sample); die();
-            Queue::push(function ($job) use ($sample, $matchRepo, $odds, $oddRepo, $matchIdRepo, $match) {
-                if ($sample !== null) {
-//                   dd($sample);
-                    $sample->incrementCount();
-                    $matchRepo->save($sample);
-                    $this->incrementWinOdds($odds, $sample);
-                } else {
-                    $sample = Match::make();
-                    $matchRepo->save($sample);
-                    $this->makeOdds($sample, $odds, $oddRepo);
-                    $this->incrementWinOdds($odds, $sample);
-                }
-
-                $matchId = MatchId::make($match->matchId);
-                $matchIdRepo->save($matchId);
-
-                $job->delete();
-
-            });
+            
+            $job = new HandleMatch($sample, $odds, $matchRepo, $this, $matchIdRepo, $match, $oddRepo);
+            $this->dispatch($job);
+            
+//            Queue::push(function ($job) use ($sample, $matchRepo, $odds, $oddRepo, $matchIdRepo, $match) {
+//                if ($sample !== null) {
+////                   dd($sample);
+//                    $sample->incrementCount();
+//                    $matchRepo->save($sample);
+//                    $this->incrementWinOdds($odds, $sample);
+//                } else {
+//                    $sample = Match::make();
+//                    $matchRepo->save($sample);
+//                    $this->makeOdds($sample, $odds, $oddRepo);
+//                    $this->incrementWinOdds($odds, $sample);
+//                }
+//
+//                $matchId = MatchId::make($match->matchId);
+//                $matchIdRepo->save($matchId);
+//
+//                $job->delete();
+//
+//            });
 
 //            $matchId = MatchId::make($match->matchId);
 //            $matchIdRepo->save($matchId);

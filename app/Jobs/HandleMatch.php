@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Jobs;
+
+use App\Jobs\Job;
+use App\Models\Match;
+use App\Models\MatchId;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class HandleMatch extends Job implements ShouldQueue
+{
+    use InteractsWithQueue, SerializesModels;
+    
+    protected $sample, $odds, $matchRepo, $matchHandler, $matchIdRepo, $match, $oddRepo;
+    
+    /**
+     * Create a new job instance.
+     *
+     * @return void
+     */
+    public function __construct($sample, $odds, $matchRepo, $this, $matchIdRepo, $match, $oddRepo)
+    {
+        $this->sample = $sample;
+        $this->odds = $odds;
+        $this->matchRepo = $matchRepo;
+        $this->matchHandler = $this;
+        $this->matchIdRepo = $matchIdRepo;
+        $this->match = $match;
+        $this->oddRepo = $oddRepo;
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        if ($this->sample !== null) {
+//                   dd($sample);
+            $this->sample->incrementCount();
+            $this->matchRepo->save($this->sample);
+            $this->matchHandler->incrementWinOdds($this->odds, $this->sample);
+        } else {
+            $sample = Match::make();
+            $this->matchRepo->save($sample);
+            $this->matchHandler->makeOdds($sample, $this->odds, $this->oddRepo);
+            $this->incrementWinOdds($this->odds, $sample);
+        }
+
+        $matchId = MatchId::make($this->match->matchId);
+        $this->matchIdRepo->save($matchId);
+
+//        $job->delete();
+    }
+}
