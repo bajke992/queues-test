@@ -44,10 +44,10 @@ class HandleMatch extends Job implements ShouldQueue
             $this->matchRepo->save($this->sample);
             $this->matchHandler->incrementWinOdds($this->odds, $this->sample);
         } else {
-            $sample = Match::make();
-            $this->matchRepo->save($sample);
-            $this->matchHandler->makeOdds($sample, $this->odds, $this->oddRepo);
-            $this->incrementWinOdds($this->odds, $sample);
+            $this->sample = Match::make();
+            $this->matchRepo->save($this->sample);
+            $this->matchHandler->makeOdds($this->sample, $this->odds, $this->oddRepo);
+            $this->matchHandler->incrementWinOdds($this->odds, $this->sample);
         }
 
         $matchId = MatchId::make($this->match->matchId);
