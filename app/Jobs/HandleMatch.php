@@ -20,12 +20,12 @@ class HandleMatch extends Job implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($sample, $odds, $matchRepo, $this, $matchIdRepo, $match, $oddRepo)
+    public function __construct($sample, $odds, $matchRepo, $matchHandler, $matchIdRepo, $match, $oddRepo)
     {
         $this->sample = $sample;
         $this->odds = $odds;
         $this->matchRepo = $matchRepo;
-        $this->matchHandler = $this;
+        $this->matchHandler = $matchHandler;
         $this->matchIdRepo = $matchIdRepo;
         $this->match = $match;
         $this->oddRepo = $oddRepo;
