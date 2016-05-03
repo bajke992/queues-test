@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Jobs\HandleMatches;
 use App\Repositories\MatchIdRepositoryInterface;
 use App\Repositories\MatchRepositoryInterface;
 use App\Repositories\OddRepositoryInterface;
@@ -114,7 +115,9 @@ class HomeController extends Controller
         }
 
         if(isset($responseBody->gamesBySport->{1})) {
-            $matchHandler->handle($responseBody->matches, $responseBody->gamesBySport->{1}, $this->matchRepo, $this->oddRepo, $this->matchIdRepo);
+            $job = new HandleMatches($matchHandler, $responseBody->matches, $responseBody->gamesBySport->{1}, $this->matchRepo, $this->oddRepo, $this->matchIdRepo);
+            $this->dispatch($job);
+//            $matchHandler->handle($responseBody->matches, $responseBody->gamesBySport->{1}, $this->matchRepo, $this->oddRepo, $this->matchIdRepo);
         }
 
         if($currentPage !== $numberOfPages) {
@@ -132,7 +135,9 @@ class HomeController extends Controller
                 ]);
 
                 $responseBody = json_decode($response->getBody());
-                $matchHandler->handle($responseBody->matches, $responseBody->gamesBySport->{1}, $this->matchRepo, $this->oddRepo, $this->matchIdRepo);
+                $job = new HandleMatches($matchHandler, $responseBody->matches, $responseBody->gamesBySport->{1}, $this->matchRepo, $this->oddRepo, $this->matchIdRepo);
+                $this->dispatch($job);
+//                $matchHandler->handle($responseBody->matches, $responseBody->gamesBySport->{1}, $this->matchRepo, $this->oddRepo, $this->matchIdRepo);
             }
         }
 

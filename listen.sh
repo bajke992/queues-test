@@ -1,0 +1,1 @@
+nohup php artisan queue:listen > /dev/null 2>&1 &
