@@ -8,6 +8,7 @@ use App\Models\MatchId;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 
 class HandleMatch extends Job implements ShouldQueue
 {
@@ -52,6 +53,8 @@ class HandleMatch extends Job implements ShouldQueue
 
         $matchId = MatchId::make($this->match->matchId);
         $this->matchIdRepo->save($matchId);
+
+        Log::info('HandleMatch - done: ' . date('Y-m-d H:i:s'));
 
 //        $job->delete();
     }
