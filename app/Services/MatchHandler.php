@@ -97,7 +97,7 @@ class MatchHandler
      * @param       $odds
      * @param Match $match
      */
-    private function incrementWinOdds($odds, Match $match)
+    public function incrementWinOdds($odds, Match $match)
     {
 //        $tmp_odds = $match->odds->slice(0, 6);
         $tmp_odds = $match->odds;
@@ -115,7 +115,7 @@ class MatchHandler
      * @param                        $odds
      * @param OddRepositoryInterface $oddRepo
      */
-    private function makeOdds(Match $match, $odds, OddRepositoryInterface $oddRepo)
+    public function makeOdds(Match $match, $odds, OddRepositoryInterface $oddRepo)
     {
         foreach ($odds as $odd) {
             $odd_tmp = Odd::make($odd['name'], $odd['category'], $odd['value']);
