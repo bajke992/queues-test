@@ -6,9 +6,13 @@ use App\Models\Odd;
 use App\Repositories\MatchIdRepositoryInterface;
 use App\Repositories\MatchRepositoryInterface;
 use App\Repositories\OddRepositoryInterface;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Support\Facades\Queue;
 
 class MatchHandler
 {
+    
+    use DispatchesJobs;
 
     /**
      * @param array                      $matches
@@ -20,32 +24,60 @@ class MatchHandler
     public function handle(array $matches, array $categories, MatchRepositoryInterface $matchRepo, OddRepositoryInterface $oddRepo, MatchIdRepositoryInterface $matchIdRepo)
     {
         foreach ($matches as $match) {
-            if ($matchIdRepo->findByMatchId($match->matchId) || !Odd::hasAllOdds($match->odds)) {
-                continue;
-            }
+            Queue::push(function ($job) use ($match, $matchRepo, $categories, $matchIdRepo, $oddRepo) {
+                if ($matchIdRepo->findByMatchId($match->matchId) || !Odd::hasAllOdds($match->odds)) {
+//                    continue;
+                    $job->delete();
+                }
 
-            $odds = $this->getOdds($match, $categories);
+                $odds = $this->getOdds($match, $categories);
+
+                /** @var Match $sample */
+                $sample = $matchRepo->matchOdds(array_slice($odds, 0, 6));
+//            var_dump($odds);
+//            var_dump($sample); die();
+                if ($sample !== null) {
+//                dd($sample);
+                    $sample->incrementCount();
+                    $matchRepo->save($sample);
+                    $this->incrementWinOdds($odds, $sample);
+                } else {
+                    $sample = Match::make();
+                    $matchRepo->save($sample);
+                    $this->makeOdds($sample, $odds, $oddRepo);
+                    $this->incrementWinOdds($odds, $sample);
+                }
+
+                $matchId = MatchId::make($match->matchId);
+                $matchIdRepo->save($matchId);
+            });
+
+//            if ($matchIdRepo->findByMatchId($match->matchId) || !Odd::hasAllOdds($match->odds)) {
+//                continue;
+//            }
+
+//            $odds = $this->getOdds($match, $categories);
 
 //            dd(array_slice($odds, 0, 6));
 
-            /** @var Match $sample */
-            $sample = $matchRepo->matchOdds(array_slice($odds, 0, 6));
+//            /** @var Match $sample */
+//            $sample = $matchRepo->matchOdds(array_slice($odds, 0, 6));
 //            var_dump($odds);
 //            var_dump($sample); die();
-            if ($sample !== null) {
+//            if ($sample !== null) {
 //                dd($sample);
-                $sample->incrementCount();
-                $matchRepo->save($sample);
-                $this->incrementWinOdds($odds, $sample);
-            } else {
-                $sample = Match::make();
-                $matchRepo->save($sample);
-                $this->makeOdds($sample, $odds, $oddRepo);
-                $this->incrementWinOdds($odds, $sample);
-            }
+//                $sample->incrementCount();
+//                $matchRepo->save($sample);
+//                $this->incrementWinOdds($odds, $sample);
+//            } else {
+//                $sample = Match::make();
+//                $matchRepo->save($sample);
+//                $this->makeOdds($sample, $odds, $oddRepo);
+//                $this->incrementWinOdds($odds, $sample);
+//            }
 
-            $matchId = MatchId::make($match->matchId);
-            $matchIdRepo->save($matchId);
+//            $matchId = MatchId::make($match->matchId);
+//            $matchIdRepo->save($matchId);
         }
     }
 
