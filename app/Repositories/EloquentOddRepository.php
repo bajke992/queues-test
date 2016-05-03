@@ -104,6 +104,10 @@ class EloquentOddRepository implements OddRepositoryInterface
         
         $query1->take(1);
         $result = $query1->get()->first();
+
+        if($result === null) {
+            return null;
+        }
         
         return $result->match;
         
