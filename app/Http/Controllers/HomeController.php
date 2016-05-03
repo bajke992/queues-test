@@ -361,4 +361,15 @@ class HomeController extends Controller
     {
         return view('ready');
     }
+
+    public function readySearch(Request $request)
+    {
+        $input = $request->input();
+        $args = json_decode($input['odds'], true);
+        $search = $this->oddRepo->search($args);
+        foreach($search as $result) {
+            $result->match->get();
+        }
+        return $search;
+    }
 }

@@ -34,7 +34,8 @@ class MatchHandler
 //            dd(array_slice($odds, 0, 6));
 
             /** @var Match $sample */
-            $sample = $matchRepo->matchOdds(array_slice($odds, 0, 6));
+//            $sample = $matchRepo->matchOdds(array_slice($odds, 0, 6));
+            $sample = $oddRepo->searchMatch($odds);
 //            var_dump($odds);
 //            var_dump($sample); die();
             

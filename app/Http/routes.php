@@ -25,13 +25,6 @@ Route::group(['prefix' => 'ajax'], function () {
     Route::get('offer', ['as' => 'offer', 'uses' => 'HomeController@offerRequest']);
     Route::get('ready', ['as' => 'offer.ready', 'uses' => 'HomeController@readyRequest']);
     Route::post('finished', ['as' => 'finished', 'uses' => 'HomeController@postFinished']);
+    Route::get('offer/search', ['as' => 'offer.search', 'uses' => 'HomeController@readySearch']);
 });
 
-Route::get('queue', function () {
-    Queue::push(function($job){
-
-        Log::info('asdf: '.date('Y-m-d H:i:s'));
-
-        $job->delete();
-    });
-});

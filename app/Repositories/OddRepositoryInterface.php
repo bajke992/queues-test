@@ -37,4 +37,10 @@ interface OddRepositoryInterface
      */
     public function delete(Odd $odd);
 
+    /**
+     * @param   mixed   $args
+     * @return  Odd     $odd
+     */
+    public function search($args);
+
 }
