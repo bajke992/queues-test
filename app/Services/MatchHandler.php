@@ -8,6 +8,7 @@ use App\Repositories\MatchIdRepositoryInterface;
 use App\Repositories\MatchRepositoryInterface;
 use App\Repositories\OddRepositoryInterface;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 
 class MatchHandler
@@ -30,40 +31,9 @@ class MatchHandler
             }
 
             $odds = $this->getOdds($match, $categories);
-
-//            dd(array_slice($odds, 0, 6));
-
-            /** @var Match $sample */
-            $sample = $matchRepo->matchOdds(array_slice($odds, 0, 6));
-//            $sample = $oddRepo->searchMatch($odds);
-//            var_dump($odds);
-//            var_dump($sample); die();
             
-            $job = new HandleMatch($sample, $odds, $matchRepo, $this, $matchIdRepo, $match, $oddRepo);
+            $job = new HandleMatch($odds, $matchRepo, $this, $matchIdRepo, $match, $oddRepo);
             $this->dispatch($job);
-            
-//            Queue::push(function ($job) use ($sample, $matchRepo, $odds, $oddRepo, $matchIdRepo, $match) {
-//                if ($sample !== null) {
-////                   dd($sample);
-//                    $sample->incrementCount();
-//                    $matchRepo->save($sample);
-//                    $this->incrementWinOdds($odds, $sample);
-//                } else {
-//                    $sample = Match::make();
-//                    $matchRepo->save($sample);
-//                    $this->makeOdds($sample, $odds, $oddRepo);
-//                    $this->incrementWinOdds($odds, $sample);
-//                }
-//
-//                $matchId = MatchId::make($match->matchId);
-//                $matchIdRepo->save($matchId);
-//
-//                $job->delete();
-//
-//            });
-
-//            $matchId = MatchId::make($match->matchId);
-//            $matchIdRepo->save($matchId);
         }
     }
 

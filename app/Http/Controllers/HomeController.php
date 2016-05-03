@@ -115,8 +115,6 @@ class HomeController extends Controller
         }
 
         if(isset($responseBody->gamesBySport->{1})) {
-//            $job = new HandleMatches($matchHandler, $responseBody->matches, $responseBody->gamesBySport->{1}, $this->matchRepo, $this->oddRepo, $this->matchIdRepo);
-//            $this->dispatch($job);
             $matchHandler->handle($responseBody->matches, $responseBody->gamesBySport->{1}, $this->matchRepo, $this->oddRepo, $this->matchIdRepo);
         }
 
@@ -135,8 +133,7 @@ class HomeController extends Controller
                 ]);
 
                 $responseBody = json_decode($response->getBody());
-//                $job = new HandleMatches($matchHandler, $responseBody->matches, $responseBody->gamesBySport->{1}, $this->matchRepo, $this->oddRepo, $this->matchIdRepo);
-//                $this->dispatch($job);
+
                 $matchHandler->handle($responseBody->matches, $responseBody->gamesBySport->{1}, $this->matchRepo, $this->oddRepo, $this->matchIdRepo);
             }
         }

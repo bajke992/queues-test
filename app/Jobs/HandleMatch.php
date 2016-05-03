@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Jobs\Job;
 use App\Models\Match;
 use App\Models\MatchId;
+use App\Models\Odd;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -21,9 +22,9 @@ class HandleMatch extends Job implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($sample, $odds, $matchRepo, $matchHandler, $matchIdRepo, $match, $oddRepo)
+    public function __construct(/*$sample, */$odds, $matchRepo, $matchHandler, $matchIdRepo, $match, $oddRepo)
     {
-        $this->sample = $sample;
+//        $this->sample = $sample;
         $this->odds = $odds;
         $this->matchRepo = $matchRepo;
         $this->matchHandler = $matchHandler;
@@ -39,8 +40,16 @@ class HandleMatch extends Job implements ShouldQueue
      */
     public function handle()
     {
+        $date = date('Y-m-d H:i:s');
+        $rand = rand(0, 9999);
+        if ($this->matchIdRepo->findByMatchId($this->match->matchId) || !Odd::hasAllOdds($this->match->odds)) {
+//            Log::info($date . " - " . $rand . " HandleMatch exit!");
+            $this->delete();
+            return;
+        }
+        $this->sample = $this->matchRepo->matchOdds(array_slice($this->odds, 0, 6));
+
         if ($this->sample !== null) {
-//                   dd($sample);
             $this->sample->incrementCount();
             $this->matchRepo->save($this->sample);
             $this->matchHandler->incrementWinOdds($this->odds, $this->sample);
@@ -53,9 +62,7 @@ class HandleMatch extends Job implements ShouldQueue
 
         $matchId = MatchId::make($this->match->matchId);
         $this->matchIdRepo->save($matchId);
-
-        Log::info('HandleMatch - done: ' . date('Y-m-d H:i:s'));
-
-//        $job->delete();
+        
+        $this->delete();
     }
 }
