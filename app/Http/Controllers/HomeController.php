@@ -288,9 +288,7 @@ class HomeController extends Controller
         $matches = Cache::get('allMatches', function () {
             $matches = $this->matchRepo->getAll();
 
-            foreach($matches as $match) {
-                $match->odds->get();
-            }
+            $matches->load('odds');
 
             Cache::put('allMatches', $matches, 60);
 
