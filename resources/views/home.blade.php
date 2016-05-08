@@ -2,7 +2,7 @@
 
 @section('content')
     <table>
-        <thead>
+        <thead style="background: white;">
             <th>
                 Match count
             </th>
@@ -37,4 +37,14 @@
         </tbody>
     </table>
 
+@endsection
+
+@section('js')
+    <script>
+        $(document).ready(function() {
+
+            $table = $('table');
+            $table.floatThead();
+        });
+    </script>
 @endsection

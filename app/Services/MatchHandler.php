@@ -43,7 +43,7 @@ class MatchHandler
      *
      * @return array
      */
-    private function getOdds($match, $categories)
+    public function getOdds($match, $categories)
     {
         $result = [];
         foreach ($match->odds as $odds) {
@@ -53,6 +53,26 @@ class MatchHandler
                         $result[] = [
                             'name'      => Odd::$ODD_NAMES[$odds->id][$subgame->id],
                             'category'  => Odd::getNameByCategory($categories, $odds->id - 1),
+                            'value'     => property_exists($subgame, 'value') ? $subgame->value : null,
+                            'winStatus' => property_exists($subgame, 'winStatus') ? $subgame->winStatus : null
+                        ];
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    public function getOddsSearch($match)
+    {
+        $result = [];
+        foreach ($match->odds as $odds) {
+            if (Odd::checkOdd($odds->id)) {
+                foreach ($odds->subgames as $subgame) {
+                    if (Odd::checkSubGame($odds->id, $subgame->id)) {
+                        $result[] = [
+                            'name'      => Odd::$ODD_NAMES[$odds->id][$subgame->id],
                             'value'     => property_exists($subgame, 'value') ? $subgame->value : null,
                             'winStatus' => property_exists($subgame, 'winStatus') ? $subgame->winStatus : null
                         ];

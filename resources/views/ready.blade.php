@@ -52,6 +52,9 @@
 
         $(document).ready(function () {
             populateData();
+
+            $table = $('table');
+            $table.floatThead();
         });
 
         var interval = true;
@@ -99,80 +102,84 @@
             $table.children().remove().delay(2000);
 
             $table.append(
-                    $('<tr/>').append(
-                            $('<th/>').text('Vreme')
-                    ).append(
-                            $('<th/>').text('Minut')
-                    ).append(
-                            $('<th/>').text('Liga')
-                    ).append(
-                            $('<th/>').text('Domacin')
-                    ).append(
-                            $('<th/>').text('Gost')
-                    ).append(
-                            $('<th/>').text('Rezultat')
-                    ).append(
-                            $('<th/>').text('Count')
-                    ).append(
-                            $('<th/>').text('1')
-                    ).append(
-                            $('<th/>').text('%')
-                    ).append(
-                            $('<th/>').text('X')
-                    ).append(
-                            $('<th/>').text('%')
-                    ).append(
-                            $('<th/>').text('2')
-                    ).append(
-                            $('<th/>').text('%')
-                    ).append(
-                            $('<th/>').text('1X')
-                    ).append(
-                            $('<th/>').text('%')
-                    ).append(
-                            $('<th/>').text('12')
-                    ).append(
-                            $('<th/>').text('%')
-                    ).append(
-                            $('<th/>').text('X2')
-                    ).append(
-                            $('<th/>').text('%')
-                    ).append(
-                            $('<th/>').text('1-1')
-                    ).append(
-                            $('<th/>').text('%')
-                    ).append(
-                            $('<th/>').text('1-X')
-                    ).append(
-                            $('<th/>').text('%')
-                    ).append(
-                            $('<th/>').text('1-2')
-                    ).append(
-                            $('<th/>').text('%')
-                    ).append(
-                            $('<th/>').text('X-1')
-                    ).append(
-                            $('<th/>').text('%')
-                    ).append(
-                            $('<th/>').text('X-X')
-                    ).append(
-                            $('<th/>').text('%')
-                    ).append(
-                            $('<th/>').text('X-2')
-                    ).append(
-                            $('<th/>').text('%')
-                    ).append(
-                            $('<th/>').text('2-1')
-                    ).append(
-                            $('<th/>').text('%')
-                    ).append(
-                            $('<th/>').text('2-X')
-                    ).append(
-                            $('<th/>').text('%')
-                    ).append(
-                            $('<th/>').text('2-2')
-                    ).append(
-                            $('<th/>').text('%')
+                    $('<thead/>').css({
+                        background: 'white'
+                    }).append(
+                            $('<tr/>').append(
+                                    $('<th/>').text('Vreme')
+                            ).append(
+                                    $('<th/>').text('Minut')
+                            ).append(
+                                    $('<th/>').text('Liga')
+                            ).append(
+                                    $('<th/>').text('Domacin')
+                            ).append(
+                                    $('<th/>').text('Gost')
+                            ).append(
+                                    $('<th/>').text('Rezultat')
+                            ).append(
+                                    $('<th/>').text('Count')
+                            ).append(
+                                    $('<th/>').text('1')
+                            ).append(
+                                    $('<th/>').text('%')
+                            ).append(
+                                    $('<th/>').text('X')
+                            ).append(
+                                    $('<th/>').text('%')
+                            ).append(
+                                    $('<th/>').text('2')
+                            ).append(
+                                    $('<th/>').text('%')
+                            ).append(
+                                    $('<th/>').text('1X')
+                            ).append(
+                                    $('<th/>').text('%')
+                            ).append(
+                                    $('<th/>').text('12')
+                            ).append(
+                                    $('<th/>').text('%')
+                            ).append(
+                                    $('<th/>').text('X2')
+                            ).append(
+                                    $('<th/>').text('%')
+                            ).append(
+                                    $('<th/>').text('1-1')
+                            ).append(
+                                    $('<th/>').text('%')
+                            ).append(
+                                    $('<th/>').text('1-X')
+                            ).append(
+                                    $('<th/>').text('%')
+                            ).append(
+                                    $('<th/>').text('1-2')
+                            ).append(
+                                    $('<th/>').text('%')
+                            ).append(
+                                    $('<th/>').text('X-1')
+                            ).append(
+                                    $('<th/>').text('%')
+                            ).append(
+                                    $('<th/>').text('X-X')
+                            ).append(
+                                    $('<th/>').text('%')
+                            ).append(
+                                    $('<th/>').text('X-2')
+                            ).append(
+                                    $('<th/>').text('%')
+                            ).append(
+                                    $('<th/>').text('2-1')
+                            ).append(
+                                    $('<th/>').text('%')
+                            ).append(
+                                    $('<th/>').text('2-X')
+                            ).append(
+                                    $('<th/>').text('%')
+                            ).append(
+                                    $('<th/>').text('2-2')
+                            ).append(
+                                    $('<th/>').text('%')
+                            )
                     )
             );
 
@@ -181,23 +188,43 @@
                 $date = new Date(item.time);
                 $hours = ($date.getHours() < 10) ? "0" + $date.getHours() : $date.getHours();
                 $minutes = ($date.getMinutes() < 10) ? "0" + $date.getMinutes() : $date.getMinutes();
-                $search = {
-                    "1":item.odds[0].subgames[0].value,
-                    "X":item.odds[0].subgames[1].value,
-                    "2":item.odds[0].subgames[2].value,
-                    "1X":item.odds[1].subgames[0].value,
-                    "12":item.odds[1].subgames[1].value,
-                    "X2":item.odds[1].subgames[2].value
+//                $search = {
+//                    "1":item.odds[0].subgames[0].value,
+//                    "X":item.odds[0].subgames[1].value,
+//                    "2":item.odds[0].subgames[2].value,
+//                    "1X":item.odds[1].subgames[0].value,
+//                    "12":item.odds[1].subgames[1].value,
+//                    "X2":item.odds[1].subgames[2].value
+//                };
+
+                $searchResult = {
+                    odds: []
                 };
 
-                $searchResult = [];
+//                xhr = new XMLHttpRequestpRequest();
+                fd = new FormData();
+
+                fd.append('_token', '{{ csrf_token() }}');
+                fd.append('item', JSON.stringify(item));
+
+//                xhr.onreadystatechange = function () {
+//
+//                };
+
+                {{--xhr.open('POST', '{{ URL::route('offer.search') }}');--}}
+//                xhr.send(fd);
+
 
                 $.ajax({
-                    url: '{{ URL::route('offer.search') }}?odds=' + JSON.stringify($search),
+                    url: '{{ URL::route('offer.search') }}',
+                    type: 'POST',
                     async: false,
+                    processData: false,
+                    contentType: false,
+                    data: fd,
                     success: function (data) {
                         console.log(data);
-                        $searchResult = data;
+                        if(data !== "") $searchResult = data;
                     }
                 });
 
@@ -217,95 +244,95 @@
                         ).append(
                                 $('<td/>').text(item.result)
                         ).append(
-                                $('<td/>').text(($searchResult.length > 0) ? $searchResult[0].match.count : "No result")
+                                $('<td/>').text(($searchResult.hasOwnProperty('count')) ? $searchResult.count : "No result")
                         ).append(
                                 $('<td/>').text(item.odds[0].subgames[0].value)
                         ).append(
-                                $('<td/>').text(($searchResult.length > 0) ? calcPercent($searchResult[0].match.count, $searchResult[0].win_count) : "").css({
+                                $('<td/>').text(($searchResult.odds.length > 0) ? calcPercent($searchResult.count, $searchResult.odds[0].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
                                 $('<td/>').text(item.odds[0].subgames[1].value)
                         ).append(
-                                $('<td/>').text(($searchResult.length > 0) ? calcPercent($searchResult[0].match.count, $searchResult[1].win_count) : "").css({
+                                $('<td/>').text(($searchResult.odds.length > 1) ? calcPercent($searchResult.count, $searchResult.odds[1].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
                                 $('<td/>').text(item.odds[0].subgames[2].value)
                         ).append(
-                                $('<td/>').text(($searchResult.length > 0) ? calcPercent($searchResult[0].match.count, $searchResult[2].win_count) : "").css({
+                                $('<td/>').text(($searchResult.odds.length > 2) ? calcPercent($searchResult.count, $searchResult.odds[2].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
                                 $('<td/>').text(item.odds[1].subgames[0].value)
                         ).append(
-                                $('<td/>').text(($searchResult.length > 0) ? calcPercent($searchResult[0].match.count, $searchResult[3].win_count) : "").css({
+                                $('<td/>').text(($searchResult.odds.length > 3) ? calcPercent($searchResult.count, $searchResult.odds[3].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
                                 $('<td/>').text(item.odds[1].subgames[1].value)
                         ).append(
-                                $('<td/>').text(($searchResult.length > 0) ? calcPercent($searchResult[0].match.count, $searchResult[4].win_count) : "").css({
+                                $('<td/>').text(($searchResult.odds.length > 4) ? calcPercent($searchResult.count, $searchResult.odds[4].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
                                 $('<td/>').text(item.odds[1].subgames[2].value)
                         ).append(
-                                $('<td/>').text(($searchResult.length > 0) ? calcPercent($searchResult[0].match.count, $searchResult[5].win_count) : "").css({
+                                $('<td/>').text(($searchResult.odds.length > 5) ? calcPercent($searchResult.count, $searchResult.odds[5].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
                                 $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[0].value : '')
                         ).append(
-                                $('<td/>').text(($searchResult.length > 0) ? calcPercent($searchResult[0].match.count, $searchResult[6].win_count) : "").css({
+                                $('<td/>').text(($searchResult.odds.length > 6) ? calcPercent($searchResult.count, $searchResult.odds[6].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
                                 $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[1].value : '')
                         ).append(
-                                $('<td/>').text(($searchResult.length > 0) ? calcPercent($searchResult[0].match.count, $searchResult[7].win_count) : "").css({
+                                $('<td/>').text(($searchResult.odds.length > 7) ? calcPercent($searchResult.count, $searchResult.odds[7].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
                                 $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[2].value : '')
                         ).append(
-                                $('<td/>').text(($searchResult.length > 0) ? calcPercent($searchResult[0].match.count, $searchResult[8].win_count) : "").css({
+                                $('<td/>').text(($searchResult.odds.length > 8) ? calcPercent($searchResult.count, $searchResult.odds[8].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
                                 $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[3].value : '')
                         ).append(
-                                $('<td/>').text(($searchResult.length > 0) ? calcPercent($searchResult[0].match.count, $searchResult[9].win_count) : "").css({
+                                $('<td/>').text(($searchResult.odds.length > 9) ? calcPercent($searchResult.count, $searchResult.odds[9].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
                                 $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[4].value : '')
                         ).append(
-                                $('<td/>').text(($searchResult.length > 0) ? calcPercent($searchResult[0].match.count, $searchResult[10].win_count) : "").css({
+                                $('<td/>').text(($searchResult.odds.length > 10) ? calcPercent($searchResult.count, $searchResult.odds[10].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
                                 $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[5].value : '')
                         ).append(
-                                $('<td/>').text(($searchResult.length > 0) ? calcPercent($searchResult[0].match.count, $searchResult[11].win_count) : "").css({
+                                $('<td/>').text(($searchResult.odds.length > 11) ? calcPercent($searchResult.count, $searchResult.odds[11].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
                                 $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[6].value : '')
                         ).append(
-                                $('<td/>').text(($searchResult.length > 0) ? calcPercent($searchResult[0].match.count, $searchResult[12].win_count) : "").css({
+                                $('<td/>').text(($searchResult.odds.length > 12) ? calcPercent($searchResult.count, $searchResult.odds[12].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
                                 $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[7].value : '')
                         ).append(
-                                $('<td/>').text(($searchResult.length > 0) ? calcPercent($searchResult[0].match.count, $searchResult[13].win_count) : "").css({
+                                $('<td/>').text(($searchResult.odds.length > 13) ? calcPercent($searchResult.count, $searchResult.odds[13].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
                                 $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[8].value : '')
                         ).append(
-                                $('<td/>').text(($searchResult.length > 0) ? calcPercent($searchResult[0].match.count, $searchResult[14].win_count) : "").css({
+                                $('<td/>').text(($searchResult.odds.length > 14) ? calcPercent($searchResult.count, $searchResult.odds[14].win_count) : "").css({
                                     color: "red"
                                 })
                         )

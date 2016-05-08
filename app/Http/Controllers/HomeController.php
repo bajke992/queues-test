@@ -10,6 +10,8 @@ use App\Repositories\OddRepositoryInterface;
 use App\Services\MatchHandler;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
@@ -147,89 +149,6 @@ class HomeController extends Controller
         ]);
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function indexOld(MatchHandler $matchHandler)
-    {
-        $http = new Client();
-        $pageNumber = session()->get('pageNumber');
-//        $pages = session()->get('pages');
-        $pages = null;
-
-        $settings = [
-            'sports' => [1],
-            'dateRange' => [
-                'from' => strtotime(date('d-m-Y 00:00:00')) . '000',
-                'to' => null
-            ],
-            'matchStatus' => [
-                'FT',
-            ],
-            "matchSorting" => "BY_TIME",
-            "selectedCompetitions" => [],
-            "selectedGames" => null,
-            "languageId" => 1,
-            "matchNumber" => null,
-            "favouriteMatchNumbers" => [],
-            "pageNumber" => $pageNumber
-        ];
-
-        $response = $http->request('POST', 'https://www.mozzartbet.com/MozzartWS/oddsLive/offer', [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json'
-            ],
-            'json' => $settings
-        ]);
-
-        $responseBody = json_decode($response->getBody());
-
-        if (count($responseBody->matches) !== 0) {
-
-            session()->put('pages', $responseBody->paginationInfo->numberOfTotalPages);
-            $pages = session()->get('pages');
-            session()->put('pageNumber', $responseBody->paginationInfo->currentPage);
-
-//            $pages = $responseBody->paginationInfo->numberOfTotalPages;
-
-//            $matchHandler->handle($responseBody->matches, $responseBody->gamesBySport->{1}, $this->matchRepo, $this->oddRepo, $this->matchIdRepo);
-            echo 'session: '.session()->get('pageNumber').'<br>';
-            echo 'request: '.$responseBody->paginationInfo->currentPage.'<br>';
-
-//            for ($i = $responseBody->paginationInfo->currentPage + 1; $i <= $pages; $i++) {
-            for ($i = $pageNumber + 1; $i <= $pages; $i++) {
-                $settings['pageNumber'] = $i;
-                $res = $http->request('POST', 'https://www.mozzartbet.com/MozzartWS/oddsLive/offer', [
-                    'headers' => [
-                        'Accept' => 'application/json',
-                        'Content-Type' => 'application/json'
-                    ],
-                    'json' => $settings
-                ]);
-
-                $body = json_decode($res->getBody());
-                session()->put('pageNumber', $body->paginationInfo->currentPage);
-                echo 'session: '.session()->get('pageNumber').'<br>';
-                echo 'request: '.$body->paginationInfo->currentPage.'<br>';
-//                $matchHandler->handle($body->matches, $body->gamesBySport->{1}, $this->matchRepo, $this->oddRepo, $this->matchIdRepo);
-            }
-        }
-
-        echo "session - pages: ".session()->get('pages').'<br>';
-        echo "request - pages: ".$responseBody->paginationInfo->numberOfTotalPages;
-
-        die;
-
-        $results = $this->matchRepo->getAll();
-
-        return view('home', [
-            'results' => $results
-        ]);
-    }
-
     public function postFinished(Request $request, MatchHandler $matchHandler)
     {
         $input = $request->only([
@@ -359,14 +278,24 @@ class HomeController extends Controller
         return view('ready');
     }
 
-    public function readySearch(Request $request)
+    public function readySearch(Request $request, MatchHandler $matchHandler)
     {
         $input = $request->input();
-        $args = json_decode($input['odds'], true);
-        $search = $this->oddRepo->search($args);
-        foreach($search as $result) {
-            $result->match->get();
-        }
-        return $search;
+        $item = json_decode($input['item']);
+     
+        $odds = $matchHandler->getOddsSearch($item);
+
+        $matches = Cache::get('allMatches', function () {
+            $matches = $this->matchRepo->getAll();
+            Cache::put('allMatches', $matches, 60);
+
+            Log::info('Cache resorted to default!');
+
+            return $matches;
+        });
+
+        $match =  $this->matchRepo->matchOddsSearch($odds, $matches);
+
+        return $match;
     }
 }

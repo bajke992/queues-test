@@ -50,6 +50,10 @@
 
         $(document).ready(function () {
             populateData();
+
+
+            $table = $('table');
+            $table.floatThead();
         });
 
         var interval = true;
@@ -94,199 +98,352 @@
             $table.children().remove().delay(2000);
 
             $table.append(
-                    $('<tr/>').append(
-                            $('<th/>').text('Vreme')
+                    $('<thead/>').css({
+                        background: 'white'
+                    }).append(
+                            $('<tr/>').append(
+                                    $('<th/>').text('Vreme')
+                            ).append(
+                                    $('<th/>').text('Minut')
+                            ).append(
+                                    $('<th/>').text('Liga')
+                            ).append(
+                                    $('<th/>').text('Domacin')
+                            ).append(
+                                    $('<th/>').text('Gost')
+                            ).append(
+                                    $('<th/>').text('Rezultat')
+                            ).append(
+                                    $('<th/>').text('1')
+                            ).append(
+                                    $('<th/>').text('X')
+                            ).append(
+                                    $('<th/>').text('2')
+                            ).append(
+                                    $('<th/>').text('1X')
+                            ).append(
+                                    $('<th/>').text('12')
+                            ).append(
+                                    $('<th/>').text('X2')
+                            ).append(
+                                    $('<th/>').text('1-1')
+                            ).append(
+                                    $('<th/>').text('1-X')
+                            ).append(
+                                    $('<th/>').text('1-2')
+                            ).append(
+                                    $('<th/>').text('X-1')
+                            ).append(
+                                    $('<th/>').text('X-X')
+                            ).append(
+                                    $('<th/>').text('X-2')
+                            ).append(
+                                    $('<th/>').text('2-1')
+                            ).append(
+                                    $('<th/>').text('2-X')
+                            ).append(
+                                    $('<th/>').text('2-2')
+                            )
                     ).append(
-                            $('<th/>').text('Minut')
-                    ).append(
-                            $('<th/>').text('Liga')
-                    ).append(
-                            $('<th/>').text('Domacin')
-                    ).append(
-                            $('<th/>').text('Gost')
-                    ).append(
-                            $('<th/>').text('Rezultat')
-                    ).append(
-                            $('<th/>').text('1')
-                    ).append(
-                            $('<th/>').text('X')
-                    ).append(
-                            $('<th/>').text('2')
-                    ).append(
-                            $('<th/>').text('1X')
-                    ).append(
-                            $('<th/>').text('12')
-                    ).append(
-                            $('<th/>').text('X2')
-                    ).append(
-                            $('<th/>').text('1-1')
-                    ).append(
-                            $('<th/>').text('1-X')
-                    ).append(
-                            $('<th/>').text('1-2')
-                    ).append(
-                            $('<th/>').text('X-1')
-                    ).append(
-                            $('<th/>').text('X-X')
-                    ).append(
-                            $('<th/>').text('X-2')
-                    ).append(
-                            $('<th/>').text('2-1')
-                    ).append(
-                            $('<th/>').text('2-X')
-                    ).append(
-                            $('<th/>').text('2-2')
+                            $('<tr/>').append(
+                                    $('<th/>').text('')
+                            ).append(
+                                    $('<th/>').text('')
+                            ).append(
+                                    $('<th/>').text('')
+                            ).append(
+                                    $('<th/>').text('')
+                            ).append(
+                                    $('<th/>').text('')
+                            ).append(
+                                    $('<th/>').attr({'data-id': $ls[0].matchId, id: 'matchId'}).text($ls[0].matchId)
+                            ).append(
+                                    $('<th/>').append(
+                                            $('<input/>').attr({
+                                                name: $ls[0].odds[0].subgames[0].value,
+                                                id: '1',
+                                                type: 'checkbox',
+                                                value: 'WIN'
+                                            })
+                                    )
+                            ).append(
+                                    $('<th/>').append(
+                                            $('<input/>').attr({
+                                                name: $ls[0].odds[0].subgames[1].value,
+                                                id: 'X',
+                                                type: 'checkbox',
+                                                value: 'WIN'
+                                            })
+                                    )
+                            ).append(
+                                    $('<th/>').append(
+                                            $('<input/>').attr({
+                                                name: $ls[0].odds[0].subgames[2].value,
+                                                id: '2',
+                                                type: 'checkbox',
+                                                value: 'WIN'
+                                            })
+                                    )
+                            ).append(
+                                    $('<th/>').append(
+                                            $('<input/>').attr({
+                                                name: $ls[0].odds[1].subgames[0].value,
+                                                id: '1X',
+                                                type: 'checkbox',
+                                                value: 'WIN'
+                                            })
+                                    )
+                            ).append(
+                                    $('<th/>').append(
+                                            $('<input/>').attr({
+                                                name: $ls[0].odds[1].subgames[1].value,
+                                                id: '12',
+                                                type: 'checkbox',
+                                                value: 'WIN'
+                                            })
+                                    )
+                            ).append(
+                                    $('<th/>').append(
+                                            $('<input/>').attr({
+                                                name: $ls[0].odds[1].subgames[2].value,
+                                                id: 'X2',
+                                                type: 'checkbox',
+                                                value: 'WIN'
+                                            })
+                                    )
+                            ).append(
+                                    $('<th/>').append(
+                                            $('<input/>').attr({
+                                                name: $ls[0].odds[4].subgames[0].value,
+                                                id: '1-1',
+                                                type: 'checkbox',
+                                                value: 'WIN'
+                                            })
+                                    )
+                            ).append(
+                                    $('<th/>').append(
+                                            $('<input/>').attr({
+                                                name: $ls[0].odds[4].subgames[1].value,
+                                                id: '1-X',
+                                                type: 'checkbox',
+                                                value: 'WIN'
+                                            })
+                                    )
+                            ).append(
+                                    $('<th/>').append(
+                                            $('<input/>').attr({
+                                                name: $ls[0].odds[4].subgames[2].value,
+                                                id: '1-2',
+                                                type: 'checkbox',
+                                                value: 'WIN'
+                                            })
+                                    )
+                            ).append(
+                                    $('<th/>').append(
+                                            $('<input/>').attr({
+                                                name: $ls[0].odds[4].subgames[3].value,
+                                                id: 'X-1',
+                                                type: 'checkbox',
+                                                value: 'WIN'
+                                            })
+                                    )
+                            ).append(
+                                    $('<th/>').append(
+                                            $('<input/>').attr({
+                                                name: $ls[0].odds[4].subgames[4].value,
+                                                id: 'X-X',
+                                                type: 'checkbox',
+                                                value: 'WIN'
+                                            })
+                                    )
+                            ).append(
+                                    $('<th/>').append(
+                                            $('<input/>').attr({
+                                                name: $ls[0].odds[4].subgames[5].value,
+                                                id: 'X-2',
+                                                type: 'checkbox',
+                                                value: 'WIN'
+                                            })
+                                    )
+                            ).append(
+                                    $('<th/>').append(
+                                            $('<input/>').attr({
+                                                name: $ls[0].odds[4].subgames[6].value,
+                                                id: '2-1',
+                                                type: 'checkbox',
+                                                value: 'WIN'
+                                            })
+                                    )
+                            ).append(
+                                    $('<th/>').append(
+                                            $('<input/>').attr({
+                                                name: $ls[0].odds[4].subgames[7].value,
+                                                id: '2-X',
+                                                type: 'checkbox',
+                                                value: 'WIN'
+                                            })
+                                    )
+                            ).append(
+                                    $('<th/>').append(
+                                            $('<input/>').attr({
+                                                name: $ls[0].odds[4].subgames[8].value,
+                                                id: '2-2',
+                                                type: 'checkbox',
+                                                value: 'WIN'
+                                            })
+                                    )
+                            )
                     )
-            ).prepend(
-                    $('<tr/>').append(
-                            $('<td/>').text('')
-                    ).append(
-                            $('<td/>').text('')
-                    ).append(
-                            $('<td/>').text('')
-                    ).append(
-                            $('<td/>').text('')
-                    ).append(
-                            $('<td/>').text('')
-                    ).append(
-                            $('<td/>').attr({'data-id': $ls[0].matchId, id: 'matchId'}).text($ls[0].matchId)
-                    ).append(
-                            $('<td/>').append(
-                                    $('<input/>').attr({
-                                        name: $ls[0].odds[0].subgames[0].value,
-                                        id: '1',
-                                        type: 'checkbox',
-                                        value: 'WIN'
-                                    })
-                            )
-                    ).append(
-                            $('<td/>').append(
-                                    $('<input/>').attr({
-                                        name: $ls[0].odds[0].subgames[1].value,
-                                        id: 'X',
-                                        type: 'checkbox',
-                                        value: 'WIN'
-                                    })
-                            )
-                    ).append(
-                            $('<td/>').append(
-                                    $('<input/>').attr({
-                                        name: $ls[0].odds[0].subgames[2].value,
-                                        id: '2',
-                                        type: 'checkbox',
-                                        value: 'WIN'
-                                    })
-                            )
-                    ).append(
-                            $('<td/>').append(
-                                    $('<input/>').attr({
-                                        name: $ls[0].odds[1].subgames[0].value,
-                                        id: '1X',
-                                        type: 'checkbox',
-                                        value: 'WIN'
-                                    })
-                            )
-                    ).append(
-                            $('<td/>').append(
-                                    $('<input/>').attr({
-                                        name: $ls[0].odds[1].subgames[1].value,
-                                        id: '12',
-                                        type: 'checkbox',
-                                        value: 'WIN'
-                                    })
-                            )
-                    ).append(
-                            $('<td/>').append(
-                                    $('<input/>').attr({
-                                        name: $ls[0].odds[1].subgames[2].value,
-                                        id: 'X2',
-                                        type: 'checkbox',
-                                        value: 'WIN'
-                                    })
-                            )
-                    ).append(
-                            $('<td/>').append(
-                                    $('<input/>').attr({
-                                        name: $ls[0].odds[4].subgames[0].value,
-                                        id: '1-1',
-                                        type: 'checkbox',
-                                        value: 'WIN'
-                                    })
-                            )
-                    ).append(
-                            $('<td/>').append(
-                                    $('<input/>').attr({
-                                        name: $ls[0].odds[4].subgames[1].value,
-                                        id: '1-X',
-                                        type: 'checkbox',
-                                        value: 'WIN'
-                                    })
-                            )
-                    ).append(
-                            $('<td/>').append(
-                                    $('<input/>').attr({
-                                        name: $ls[0].odds[4].subgames[2].value,
-                                        id: '1-2',
-                                        type: 'checkbox',
-                                        value: 'WIN'
-                                    })
-                            )
-                    ).append(
-                            $('<td/>').append(
-                                    $('<input/>').attr({
-                                        name: $ls[0].odds[4].subgames[3].value,
-                                        id: 'X-1',
-                                        type: 'checkbox',
-                                        value: 'WIN'
-                                    })
-                            )
-                    ).append(
-                            $('<td/>').append(
-                                    $('<input/>').attr({
-                                        name: $ls[0].odds[4].subgames[4].value,
-                                        id: 'X-X',
-                                        type: 'checkbox',
-                                        value: 'WIN'
-                                    })
-                            )
-                    ).append(
-                            $('<td/>').append(
-                                    $('<input/>').attr({
-                                        name: $ls[0].odds[4].subgames[5].value,
-                                        id: 'X-2',
-                                        type: 'checkbox',
-                                        value: 'WIN'
-                                    })
-                            )
-                    ).append(
-                            $('<td/>').append(
-                                    $('<input/>').attr({
-                                        name: $ls[0].odds[4].subgames[6].value,
-                                        id: '2-1',
-                                        type: 'checkbox',
-                                        value: 'WIN'
-                                    })
-                            )
-                    ).append(
-                            $('<td/>').append(
-                                    $('<input/>').attr({
-                                        name: $ls[0].odds[4].subgames[7].value,
-                                        id: '2-X',
-                                        type: 'checkbox',
-                                        value: 'WIN'
-                                    })
-                            )
-                    ).append(
-                            $('<td/>').append(
-                                    $('<input/>').attr({
-                                        name: $ls[0].odds[4].subgames[8].value,
-                                        id: '2-2',
-                                        type: 'checkbox',
-                                        value: 'WIN'
-                                    })
-                            )
-                    )
-            );
+            );//.append(
+//                    $('<tr/>').append(
+//                            $('<td/>').text('')
+//                    ).append(
+//                            $('<td/>').text('')
+//                    ).append(
+//                            $('<td/>').text('')
+//                    ).append(
+//                            $('<td/>').text('')
+//                    ).append(
+//                            $('<td/>').text('')
+//                    ).append(
+//                            $('<td/>').attr({'data-id': $ls[0].matchId, id: 'matchId'}).text($ls[0].matchId)
+//                    ).append(
+//                            $('<td/>').append(
+//                                    $('<input/>').attr({
+//                                        name: $ls[0].odds[0].subgames[0].value,
+//                                        id: '1',
+//                                        type: 'checkbox',
+//                                        value: 'WIN'
+//                                    })
+//                            )
+//                    ).append(
+//                            $('<td/>').append(
+//                                    $('<input/>').attr({
+//                                        name: $ls[0].odds[0].subgames[1].value,
+//                                        id: 'X',
+//                                        type: 'checkbox',
+//                                        value: 'WIN'
+//                                    })
+//                            )
+//                    ).append(
+//                            $('<td/>').append(
+//                                    $('<input/>').attr({
+//                                        name: $ls[0].odds[0].subgames[2].value,
+//                                        id: '2',
+//                                        type: 'checkbox',
+//                                        value: 'WIN'
+//                                    })
+//                            )
+//                    ).append(
+//                            $('<td/>').append(
+//                                    $('<input/>').attr({
+//                                        name: $ls[0].odds[1].subgames[0].value,
+//                                        id: '1X',
+//                                        type: 'checkbox',
+//                                        value: 'WIN'
+//                                    })
+//                            )
+//                    ).append(
+//                            $('<td/>').append(
+//                                    $('<input/>').attr({
+//                                        name: $ls[0].odds[1].subgames[1].value,
+//                                        id: '12',
+//                                        type: 'checkbox',
+//                                        value: 'WIN'
+//                                    })
+//                            )
+//                    ).append(
+//                            $('<td/>').append(
+//                                    $('<input/>').attr({
+//                                        name: $ls[0].odds[1].subgames[2].value,
+//                                        id: 'X2',
+//                                        type: 'checkbox',
+//                                        value: 'WIN'
+//                                    })
+//                            )
+//                    ).append(
+//                            $('<td/>').append(
+//                                    $('<input/>').attr({
+//                                        name: $ls[0].odds[4].subgames[0].value,
+//                                        id: '1-1',
+//                                        type: 'checkbox',
+//                                        value: 'WIN'
+//                                    })
+//                            )
+//                    ).append(
+//                            $('<td/>').append(
+//                                    $('<input/>').attr({
+//                                        name: $ls[0].odds[4].subgames[1].value,
+//                                        id: '1-X',
+//                                        type: 'checkbox',
+//                                        value: 'WIN'
+//                                    })
+//                            )
+//                    ).append(
+//                            $('<td/>').append(
+//                                    $('<input/>').attr({
+//                                        name: $ls[0].odds[4].subgames[2].value,
+//                                        id: '1-2',
+//                                        type: 'checkbox',
+//                                        value: 'WIN'
+//                                    })
+//                            )
+//                    ).append(
+//                            $('<td/>').append(
+//                                    $('<input/>').attr({
+//                                        name: $ls[0].odds[4].subgames[3].value,
+//                                        id: 'X-1',
+//                                        type: 'checkbox',
+//                                        value: 'WIN'
+//                                    })
+//                            )
+//                    ).append(
+//                            $('<td/>').append(
+//                                    $('<input/>').attr({
+//                                        name: $ls[0].odds[4].subgames[4].value,
+//                                        id: 'X-X',
+//                                        type: 'checkbox',
+//                                        value: 'WIN'
+//                                    })
+//                            )
+//                    ).append(
+//                            $('<td/>').append(
+//                                    $('<input/>').attr({
+//                                        name: $ls[0].odds[4].subgames[5].value,
+//                                        id: 'X-2',
+//                                        type: 'checkbox',
+//                                        value: 'WIN'
+//                                    })
+//                            )
+//                    ).append(
+//                            $('<td/>').append(
+//                                    $('<input/>').attr({
+//                                        name: $ls[0].odds[4].subgames[6].value,
+//                                        id: '2-1',
+//                                        type: 'checkbox',
+//                                        value: 'WIN'
+//                                    })
+//                            )
+//                    ).append(
+//                            $('<td/>').append(
+//                                    $('<input/>').attr({
+//                                        name: $ls[0].odds[4].subgames[7].value,
+//                                        id: '2-X',
+//                                        type: 'checkbox',
+//                                        value: 'WIN'
+//                                    })
+//                            )
+//                    ).append(
+//                            $('<td/>').append(
+//                                    $('<input/>').attr({
+//                                        name: $ls[0].odds[4].subgames[8].value,
+//                                        id: '2-2',
+//                                        type: 'checkbox',
+//                                        value: 'WIN'
+//                                    })
+//                            )
+//                    )
+            //);
 
             $ls.forEach(function (item) {
                 console.log(item);

@@ -110,4 +110,31 @@ class EloquentMatchRepository implements MatchRepositoryInterface
         }
     }
 
+    public function matchOddsSearch($odds, $allMatches){
+
+        $matches = $allMatches;
+        $result = null;
+        $oddsss = [];
+
+        foreach($odds as $odd) {
+            $oddsss[] = [
+                'name' => $odd['name'],
+//                'category' => $odd['category'],
+                'value' => $odd['value']
+            ];
+        }
+
+        foreach($matches as $match){
+            $oddss = [];
+            foreach(array_slice($match->odds->toArray(), 0, 6) as $tmp_odd) {
+                $oddss[] = [
+                    'name' => $tmp_odd['name'],
+//                    'category' => $tmp_odd['category'],
+                    'value' => $tmp_odd['value']
+                ];
+            }
+            if($oddsss === $oddss) return $match;
+        }
+    }
+
 }
