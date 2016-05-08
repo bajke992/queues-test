@@ -287,6 +287,11 @@ class HomeController extends Controller
 
         $matches = Cache::get('allMatches', function () {
             $matches = $this->matchRepo->getAll();
+
+            foreach($matches as $match) {
+                $match->odds->get();
+            }
+
             Cache::put('allMatches', $matches, 60);
 
             Log::info('Cache resorted to default!');
