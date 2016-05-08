@@ -133,7 +133,8 @@ class EloquentMatchRepository implements MatchRepositoryInterface
                     'value' => $tmp_odd['value']
                 ];
             }
-            if($oddsss === $oddss) return $match;
+            
+            if(array_slice($oddsss, 0, 6) === $oddss) return $match;
         }
     }
 
