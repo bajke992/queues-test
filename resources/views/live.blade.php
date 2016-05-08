@@ -12,6 +12,9 @@
 
 @section('js')
     <script>
+
+        $table = $('table');
+
         Array.prototype.remove = function () {
             var what, a = arguments, L = a.length, ax;
             while (L && this.length) {
@@ -51,18 +54,19 @@
         $(document).ready(function () {
             populateData();
 
-
-            $table = $('table');
             $table.floatThead();
         });
 
         var interval = true;
 
         function send() {
+            $table.floatThead('destroy');
+
             if(interval) {
                 setInterval(send, 300000);
                 interval = false;
             }
+
             $.ajax({
                 url: '{{ URL::route('offer', ['','']) }}',
                 success: function (data) {
@@ -73,6 +77,9 @@
                     if (window.localStorage.hasOwnProperty('data')) window.localStorage.removeItem('data');
                     checkLS();
                     populateData();
+
+                    $table.floatThead();
+
                     collectFinishedData();
                 }
             });
