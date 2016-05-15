@@ -654,6 +654,8 @@
                     )
             );
 
+            done = false;
+
             $ls.forEach(function (item) {
                 console.log(item);
                 $date = new Date(item.time);
@@ -689,18 +691,22 @@
                 fd.append('_token', '{{ csrf_token() }}');
                 fd.append('item', JSON.stringify(item));
 
-                $.ajax({
-                    url: '{{ URL::route('offer.search') }}',
-                    type: 'POST',
-                    async: false,
-                    processData: false,
-                    contentType: false,
-                    data: fd,
-                    success: function (data) {
-                        console.log(data);
-                        if(data !== "") $searchResult = data;
-                    }
-                });
+                if(!done) {
+                    $.ajax({
+                        url: '{{ URL::route('offer.search') }}',
+                        type: 'POST',
+                        async: false,
+                        processData: false,
+                        contentType: false,
+                        data: fd,
+                        success: function (data) {
+                            console.log(data);
+                            if (data !== "") $searchResult = data;
+                        }
+                    });
+                }
+
+                done = true;
 
                 $table.append(
                         $('<tr/>').attr('data-id', item.matchId).append(
