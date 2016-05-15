@@ -259,7 +259,9 @@
                                 width: 'auto',
                                 height: 'auto',
                                 background: backgroundColor,
-                                position: 'absolute',
+                                position: 'relative',
+                                bottom: 20,
+                                'z-index': 10000,
                                 padding: 5
                             }).append(
                                     $('<div />').css({
@@ -313,7 +315,9 @@
                                 width: 'auto',
                                 height: 'auto',
                                 background: backgroundColor,
-                                position: 'absolute',
+                                position: 'relative',
+                                bottom: 20,
+                                'z-index': 10000,
                                 padding: 5
                             }).append(
                                     $('<div />').css({
@@ -367,7 +371,9 @@
                                 width: 'auto',
                                 height: 'auto',
                                 background: backgroundColor,
-                                position: 'absolute',
+                                position: 'relative',
+                                bottom: 20,
+                                'z-index': 10000,
                                 padding: 5
                             }).append(
                                     $('<div />').css({
@@ -420,7 +426,9 @@
                                 width: 'auto',
                                 height: 'auto',
                                 background: backgroundColor,
-                                position: 'absolute',
+                                position: 'relative',
+                                bottom: 20,
+                                'z-index': 10000,
                                 padding: 5
                             }).append(
                                     $('<div />').css({
@@ -473,7 +481,9 @@
                                 width: 'auto',
                                 height: 'auto',
                                 background: backgroundColor,
-                                position: 'absolute',
+                                position: 'relative',
+                                bottom: 20,
+                                'z-index': 10000,
                                 padding: 5
                             }).append(
                                     $('<div />').css({
@@ -526,7 +536,9 @@
                                 width: 'auto',
                                 height: 'auto',
                                 background: backgroundColor,
-                                position: 'absolute',
+                                position: 'relative',
+                                bottom: 20,
+                                'z-index': 10000,
                                 padding: 5
                             }).append(
                                     $('<div />').css({
@@ -724,37 +736,37 @@
                         ).append(
                                 $('<td/>').text(($searchResult.hasOwnProperty('count')) ? $searchResult.count : "No result")
                         ).append(
-                                $('<td/>').attr({ 'class' : '1' }).text(item.odds[0].subgames[0].value)
+                                $('<td/>').attr({ 'class' : '1' }).css({ position: 'relative'}).text(item.odds[0].subgames[0].value)
                         ).append(
                                 $('<td/>').text(($searchResult.odds.length > 0) ? calcPercent($searchResult.count, $searchResult.odds[0].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
-                                $('<td/>').attr({ 'class' : 'X' }).text(item.odds[0].subgames[1].value)
+                                $('<td/>').attr({ 'class' : 'X' }).css({ position: 'relative'}).text(item.odds[0].subgames[1].value)
                         ).append(
                                 $('<td/>').text(($searchResult.odds.length > 1) ? calcPercent($searchResult.count, $searchResult.odds[1].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
-                                $('<td/>').attr({ 'class' : '2' }).text(item.odds[0].subgames[2].value)
+                                $('<td/>').attr({ 'class' : '2' }).css({ position: 'relative'}).text(item.odds[0].subgames[2].value)
                         ).append(
                                 $('<td/>').text(($searchResult.odds.length > 2) ? calcPercent($searchResult.count, $searchResult.odds[2].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
-                                $('<td/>').attr({ 'class' : '1X' }).text(item.odds[1].subgames[0].value)
+                                $('<td/>').attr({ 'class' : '1X' }).css({ position: 'relative'}).text(item.odds[1].subgames[0].value)
                         ).append(
                                 $('<td/>').text(($searchResult.odds.length > 3) ? calcPercent($searchResult.count, $searchResult.odds[3].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
-                                $('<td/>').attr({ 'class' : '12' }).text(item.odds[1].subgames[1].value)
+                                $('<td/>').attr({ 'class' : '12' }).css({ position: 'relative'}).text(item.odds[1].subgames[1].value)
                         ).append(
                                 $('<td/>').text(($searchResult.odds.length > 4) ? calcPercent($searchResult.count, $searchResult.odds[4].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
-                                $('<td/>').attr({ 'class' : 'X2' }).text(item.odds[1].subgames[2].value)
+                                $('<td/>').attr({ 'class' : 'X2' }).css({ position: 'relative'}).text(item.odds[1].subgames[2].value)
                         ).append(
                                 $('<td/>').text(($searchResult.odds.length > 5) ? calcPercent($searchResult.count, $searchResult.odds[5].win_count) : "").css({
                                     color: "red"
