@@ -256,7 +256,7 @@
 
                     $(this).append(
                             $('<div />').attr({ 'id' : matchId + '-1' }).css({
-                                width: 'auto',
+                                width: 170,
                                 height: 'auto',
                                 background: backgroundColor,
                                 position: 'absolute',
@@ -312,7 +312,7 @@
 
                     $(this).append(
                             $('<div />').attr({ 'id' : matchId + '-X' }).css({
-                                width: 'auto',
+                                width: 170,
                                 height: 'auto',
                                 background: backgroundColor,
                                 position: 'absolute',
@@ -368,7 +368,7 @@
 
                     $(this).append(
                             $('<div />').attr({ 'id' : matchId + '-2' }).css({
-                                width: 'auto',
+                                width: 170,
                                 height: 'auto',
                                 background: backgroundColor,
                                 position: 'absolute',
@@ -423,7 +423,7 @@
 
                     $(this).append(
                             $('<div />').attr({ 'id' : matchId + '-1X' }).css({
-                                width: 'auto',
+                                width: 170,
                                 height: 'auto',
                                 background: backgroundColor,
                                 position: 'absolute',
@@ -478,7 +478,7 @@
 
                     $(this).append(
                             $('<div />').attr({ 'id' : matchId + '-12' }).css({
-                                width: 'auto',
+                                width: 170,
                                 height: 'auto',
                                 background: backgroundColor,
                                 position: 'absolute',
@@ -533,7 +533,7 @@
 
                     $(this).append(
                             $('<div />').attr({ 'id' : matchId + '-X2' }).css({
-                                width: 'auto',
+                                width: 170,
                                 height: 'auto',
                                 background: backgroundColor,
                                 position: 'absolute',
