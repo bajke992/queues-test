@@ -691,7 +691,7 @@
                 fd.append('_token', '{{ csrf_token() }}');
                 fd.append('item', JSON.stringify(item));
 
-                if(!done) {
+//                if(!done) {
                     $.ajax({
                         url: '{{ URL::route('offer.search') }}',
                         type: 'POST',
@@ -704,7 +704,7 @@
                             if (data !== "") $searchResult = data;
                         }
                     });
-                }
+//                }
 
                 done = true;
 
