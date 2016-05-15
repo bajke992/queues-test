@@ -65,7 +65,7 @@
             $table.floatThead('destroy');
 
             if(interval) {
-                setInterval(send, 300000);
+                setInterval(send, 2 * 300000);
                 interval = false;
             }
             if($('#page').val() !== "") $page = $('#page').val();
