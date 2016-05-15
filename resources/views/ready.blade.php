@@ -54,6 +54,7 @@
 
         $(document).ready(function () {
             populateData();
+            setOnHover();
 
             $table.floatThead();
         });
@@ -81,10 +82,146 @@
                     checkLS();
                     populateData();
 
+                    setOnHover();
+
                     $table.floatThead();
 //                    collectFinishedData();
                 }
             });
+        }
+
+//      history template
+//        matchHistory = [
+//            {
+//                "matchId" : 2257073,
+//                "odds" : [
+//                    {
+//                        "name": "1",
+//                        "history": [
+//                            { "timestamp" : "2016-03-12 12:22:33", "value" : "1,25" },
+//                            { "timestamp" : "2016-03-12 12:27:33", "value" : "1,35" },
+//                            { "timestamp" : "2016-03-12 12:32:33", "value" : "1,30" }
+//                        ]
+//                    },
+//                    {
+//                        "name" : "X",
+//                        "history": [
+//                            { "timestamp" : "2016-03-12 12:22:33", "value" : "3,10" },
+//                            { "timestamp" : "2016-03-12 12:27:33", "value" : "3,00" },
+//                            { "timestamp" : "2016-03-12 12:32:33", "value" : "2,95" }
+//                        ]
+//                    },
+//                    {
+//                        "name" : "2",
+//                        "history": [
+//                            { "timestamp" : "2016-03-12 12:22:33", "value" : "2,20" },
+//                            { "timestamp" : "2016-03-12 12:27:33", "value" : "2,30" },
+//                            { "timestamp" : "2016-03-12 12:32:33", "value" : "2,25" }
+//                        ]
+//                    }
+//                ]
+//            }
+//        ];
+//
+
+        function checkHistory(history, matchId, name){
+            oddHistory = [];
+            history.forEach(function (item) {
+                if(item.matchId === matchId) {
+                    item.odds.forEach(function (odd) {
+                        if (odd.name === name) {
+                            oddHistory = odd.history;
+                        }
+                    });
+                }
+            });
+
+            return oddHistory;
+        }
+
+//      Odds template
+//        oddsToInsert = [
+//            { "name" : "1", "value" : "1,95"},
+//            { "name" : "X", "value" : "4,05"},
+//            { "name" : "2", "value" : "3,35"}
+//        ];
+        function makeOddsHistory(history, matchId, odds, check) {
+            var matchIndex = null;
+
+            var $time = new Date();
+            var hours = ($time.getHours() < 10) ? "0" + $time.getHours() : $time.getHours();
+            var minutes = ($time.getMinutes() < 10) ? "0" + $time.getMinutes() : $time.getMinutes();
+            var seconds = ($time.getSeconds() < 10) ? "0" + $time.getSeconds() : $time.getSeconds();
+//            var year = $time.getFullYear();
+            var day = ($time.getDate() < 10) ? "0" + $time.getDate() : $time.getDate();
+            var month = ($time.getMonth() < 10) ? "0" + ($time.getMonth() + 1) : ($time.getMonth() + 1);
+
+            if(check) {
+                history.forEach(function (item, index) {
+                    if(item.matchId === matchId){
+                        matchIndex = index;
+                    }
+                });
+
+                odds.forEach(function (item) {
+                    history[matchIndex].odds.forEach(function (odd) {
+                        var lastItem = odd.history.length;
+                        var direction = '';
+
+                        if(item.name === odd.name && item.value !== odd.history[lastItem - 1].value ) {
+                            if(item.value > odd.history[lastItem - 1].value) direction = '&uarr;';
+                            if(item.value < odd.history[lastItem - 1].value) direction = '&darr;';
+                            odd.history.push({
+                                "timestamp" : month + "-" + day + " " + hours + ":" + minutes + ":" + seconds,
+                                "value" : item.value,
+                                "direction" : direction
+                            });
+                        }
+                    });
+                });
+
+            } else {
+                var newItem = {
+                    "matchId" : matchId,
+                    "odds" : []
+                };
+
+                odds.forEach(function (item) {
+                    newItem.odds.push({
+                        "name" : item.name,
+                        "history" : [
+                            {
+                                "timestamp" : month + "-" + day + " " + hours + ":" + minutes + ":" + seconds,
+                                "value" : item.value,
+                            }
+                        ]
+                    });
+                });
+
+                history.push(newItem);
+            }
+
+            return history;
+        }
+
+        function pushHistory(matchId, odds){
+            if(!window.localStorage.hasOwnProperty('history')){
+                window.localStorage.setItem('history', JSON.stringify([]));
+            }
+
+            var history = JSON.parse(window.localStorage.getItem('history'));
+            var check = false;
+
+            history.forEach(function (item) {
+                if(item.matchId === matchId){
+                    check = true;
+                }
+            });
+
+            history = makeOddsHistory(history, matchId, odds, check);
+
+            window.localStorage.setItem('history', JSON.stringify(history));
+            return history;
         }
 
         function checkLS() {
@@ -98,6 +235,335 @@
 
             window.localStorage.removeItem('ready');
             window.localStorage.setItem('ready', JSON.stringify($newLS));
+        }
+
+        function setOnHover(){
+            var backgroundColor = 'yellow';
+
+            $('[data-id]').each(function (index, item) {
+                var history = JSON.parse(localStorage.getItem('history'));
+                var matchId = $(item).data('id');
+                // start 1
+                $('[data-id=' + matchId + '] .1').hover(function () {
+                    var historyArray = checkHistory(history, matchId, "1");
+                    var timestamps = "";
+                    var values = "";
+
+                    historyArray.forEach(function (item) {
+                        timestamps += item.timestamp + "<br />";
+                        values += item.value + "<br />";
+                    });
+
+                    $(this).append(
+                            $('<div />').attr({ 'id' : matchId + '-1' }).css({
+                                width: 'auto',
+                                height: 'auto',
+                                background: backgroundColor,
+                                position: 'absolute',
+                                padding: 5
+                            }).append(
+                                    $('<div />').css({
+                                        float: 'left',
+                                        'padding-right': 10
+
+                                    }).html(timestamps)
+                            ).append(
+                                    $('<div />').css({
+                                        float: 'right',
+                                        'padding-left': 10
+
+                                    }).html(values)
+                            )
+                    );
+
+                    $('#' + matchId + '-1').append(
+                            $('<div />').attr({ 'class' : 'arrows' }).css({ float: 'right' })
+                    );
+
+                    historyArray.forEach(function (item) {
+                        var dirColor = '';
+                        if(item.direction === '&uarr;') dirColor = 'green';
+                        if(item.direction === '&darr;') dirColor = 'red';
+                        $('#' + matchId + '-1 .arrows').append(
+                                $('<div />').css({
+                                    color: dirColor,
+                                    height: 20,
+                                    float: 'right',
+                                    clear: 'both'
+                                }).html(item.direction)
+                        );
+                    });
+                }, function () {
+                    $('#' + matchId + '-1').remove();
+                });
+                // end 1
+                // start 2
+                $('[data-id=' + matchId + '] .X').hover(function () {
+                    var historyArray = checkHistory(history, matchId, "X");
+                    var timestamps = "";
+                    var values = "";
+
+                    historyArray.forEach(function (item) {
+                        timestamps += item.timestamp + "<br />";
+                        values += item.value + "<br />";
+                    });
+
+                    $(this).append(
+                            $('<div />').attr({ 'id' : matchId + '-X' }).css({
+                                width: 'auto',
+                                height: 'auto',
+                                background: backgroundColor,
+                                position: 'absolute',
+                                padding: 5
+                            }).append(
+                                    $('<div />').css({
+                                        float: 'left',
+                                        'padding-right': 10
+
+                                    }).html(timestamps)
+                            ).append(
+                                    $('<div />').css({
+                                        float: 'right',
+                                        'padding-left': 10
+
+                                    }).html(values)
+                            )
+                    );
+
+                    $('#' + matchId + '-X').append(
+                            $('<div />').attr({ 'class' : 'arrows' }).css({ float: 'right' })
+                    );
+
+                    historyArray.forEach(function (item) {
+                        var dirColor = '';
+                        if(item.direction === '&uarr;') dirColor = 'green';
+                        if(item.direction === '&darr;') dirColor = 'red';
+                        $('#' + matchId + '-X .arrows').append(
+                                $('<div />').css({
+                                    color: dirColor,
+                                    height: 20,
+                                    float: 'right',
+                                    clear: 'both'
+                                }).html(item.direction)
+                        );
+                    });
+                }, function () {
+                    $('#' + matchId + '-X').remove();
+                });
+                //end X
+                //start 2
+                $('[data-id=' + matchId + '] .2').hover(function () {
+                    var historyArray = checkHistory(history, matchId, "2");
+                    var timestamps = "";
+                    var values = "";
+
+                    historyArray.forEach(function (item) {
+                        timestamps += item.timestamp + "<br />";
+                        values += item.value + "<br />";
+                    });
+
+                    $(this).append(
+                            $('<div />').attr({ 'id' : matchId + '-2' }).css({
+                                width: 'auto',
+                                height: 'auto',
+                                background: backgroundColor,
+                                position: 'absolute',
+                                padding: 5
+                            }).append(
+                                    $('<div />').css({
+                                        float: 'left',
+                                        'padding-right': 10
+
+                                    }).html(timestamps)
+                            ).append(
+                                    $('<div />').css({
+                                        float: 'right',
+                                        'padding-left': 10
+
+                                    }).html(values)
+                            )
+                    );
+                    $('#' + matchId + '-2').append(
+                            $('<div />').attr({ 'class' : 'arrows' }).css({ float: 'right' })
+                    );
+
+                    historyArray.forEach(function (item) {
+                        var dirColor = '';
+                        if(item.direction === '&uarr;') dirColor = 'green';
+                        if(item.direction === '&darr;') dirColor = 'red';
+                        $('#' + matchId + '-2 .arrows').append(
+                                $('<div />').css({
+                                    color: dirColor,
+                                    height: 20,
+                                    float: 'right',
+                                    clear: 'both'
+                                }).html(item.direction)
+                        );
+                    });
+                }, function () {
+                    $('#' + matchId + '-2').remove();
+                });
+                // end 2
+                // start 1X
+                $('[data-id=' + matchId + '] .1X').hover(function () {
+                    var historyArray = checkHistory(history, matchId, "1X");
+                    var timestamps = "";
+                    var values = "";
+
+                    historyArray.forEach(function (item) {
+                        timestamps += item.timestamp + "<br />";
+                        values += item.value + "<br />";
+                    });
+
+                    $(this).append(
+                            $('<div />').attr({ 'id' : matchId + '-1X' }).css({
+                                width: 'auto',
+                                height: 'auto',
+                                background: backgroundColor,
+                                position: 'absolute',
+                                padding: 5
+                            }).append(
+                                    $('<div />').css({
+                                        float: 'left',
+                                        'padding-right': 10
+
+                                    }).html(timestamps)
+                            ).append(
+                                    $('<div />').css({
+                                        float: 'right',
+                                        'padding-left': 10
+
+                                    }).html(values)
+                            )
+                    );
+                    $('#' + matchId + '-1X').append(
+                            $('<div />').attr({ 'class' : 'arrows' }).css({ float: 'right' })
+                    );
+
+                    historyArray.forEach(function (item) {
+                        var dirColor = '';
+                        if(item.direction === '&uarr;') dirColor = 'green';
+                        if(item.direction === '&darr;') dirColor = 'red';
+                        $('#' + matchId + '-1X .arrows').append(
+                                $('<div />').css({
+                                    color: dirColor,
+                                    height: 20,
+                                    float: 'right',
+                                    clear: 'both'
+                                }).html(item.direction)
+                        );
+                    });
+                }, function () {
+                    $('#' + matchId + '-1X').remove();
+                });
+                // end 1X
+                // start 12
+                $('[data-id=' + matchId + '] .12').hover(function () {
+                    var historyArray = checkHistory(history, matchId, "12");
+                    var timestamps = "";
+                    var values = "";
+
+                    historyArray.forEach(function (item) {
+                        timestamps += item.timestamp + "<br />";
+                        values += item.value + "<br />";
+                    });
+
+                    $(this).append(
+                            $('<div />').attr({ 'id' : matchId + '-12' }).css({
+                                width: 'auto',
+                                height: 'auto',
+                                background: backgroundColor,
+                                position: 'absolute',
+                                padding: 5
+                            }).append(
+                                    $('<div />').css({
+                                        float: 'left',
+                                        'padding-right': 10
+
+                                    }).html(timestamps)
+                            ).append(
+                                    $('<div />').css({
+                                        float: 'right',
+                                        'padding-left': 10
+
+                                    }).html(values)
+                            )
+                    );
+                    $('#' + matchId + '-12').append(
+                            $('<div />').attr({ 'class' : 'arrows' }).css({ float: 'right' })
+                    );
+
+                    historyArray.forEach(function (item) {
+                        var dirColor = '';
+                        if(item.direction === '&uarr;') dirColor = 'green';
+                        if(item.direction === '&darr;') dirColor = 'red';
+                        $('#' + matchId + '-12 .arrows').append(
+                                $('<div />').css({
+                                    color: dirColor,
+                                    height: 20,
+                                    float: 'right',
+                                    clear: 'both'
+                                }).html(item.direction)
+                        );
+                    });
+                }, function () {
+                    $('#' + matchId + '-12').remove();
+                });
+                // end 12
+                // start X2
+                $('[data-id=' + matchId + '] .X2').hover(function () {
+                    var historyArray = checkHistory(history, matchId, "X2");
+                    var timestamps = "";
+                    var values = "";
+
+                    historyArray.forEach(function (item) {
+                        timestamps += item.timestamp + "<br />";
+                        values += item.value + "<br />";
+                    });
+
+                    $(this).append(
+                            $('<div />').attr({ 'id' : matchId + '-X2' }).css({
+                                width: 'auto',
+                                height: 'auto',
+                                background: backgroundColor,
+                                position: 'absolute',
+                                padding: 5
+                            }).append(
+                                    $('<div />').css({
+                                        float: 'left',
+                                        'padding-right': 10
+
+                                    }).html(timestamps)
+                            ).append(
+                                    $('<div />').css({
+                                        float: 'right',
+                                        'padding-left': 10
+
+                                    }).html(values)
+                            )
+                    );
+                    $('#' + matchId + '-X2').append(
+                            $('<div />').attr({ 'class' : 'arrows' }).css({ float: 'right' })
+                    );
+
+                    historyArray.forEach(function (item) {
+                        var dirColor = '';
+                        if(item.direction === '&uarr;') dirColor = 'green';
+                        if(item.direction === '&darr;') dirColor = 'red';
+                        $('#' + matchId + '-X2 .arrows').append(
+                                $('<div />').css({
+                                    color: dirColor,
+                                    height: 20,
+                                    float: 'right',
+                                    clear: 'both'
+                                }).html(item.direction)
+                        );
+                    });
+                }, function () {
+                    $('#' + matchId + '-X2').remove();
+                });
+                // end X2
+            });
         }
 
         function populateData() {
@@ -193,32 +659,35 @@
                 $date = new Date(item.time);
                 $hours = ($date.getHours() < 10) ? "0" + $date.getHours() : $date.getHours();
                 $minutes = ($date.getMinutes() < 10) ? "0" + $date.getMinutes() : $date.getMinutes();
-//                $search = {
-//                    "1":item.odds[0].subgames[0].value,
-//                    "X":item.odds[0].subgames[1].value,
-//                    "2":item.odds[0].subgames[2].value,
-//                    "1X":item.odds[1].subgames[0].value,
-//                    "12":item.odds[1].subgames[1].value,
-//                    "X2":item.odds[1].subgames[2].value
-//                };
+
+                $historyItems = [
+                    { "name" : "1", "value" : item.odds[0].subgames[0].value},
+                    { "name" : "X", "value" : item.odds[0].subgames[1].value},
+                    { "name" : "2", "value" : item.odds[0].subgames[2].value},
+                    { "name" : "1X", "value" : item.odds[1].subgames[0].value},
+                    { "name" : "12", "value" : item.odds[1].subgames[1].value},
+                    { "name" : "X2", "value" : item.odds[1].subgames[2].value},
+                    { "name" : "1-1", "value" : item.odds[4].subgames[0].value},
+                    { "name" : "1-X", "value" : item.odds[4].subgames[1].value},
+                    { "name" : "1-2", "value" : item.odds[4].subgames[2].value},
+                    { "name" : "X-1", "value" : item.odds[4].subgames[3].value},
+                    { "name" : "X-X", "value" : item.odds[4].subgames[4].value},
+                    { "name" : "X-2", "value" : item.odds[4].subgames[5].value},
+                    { "name" : "2-1", "value" : item.odds[4].subgames[6].value},
+                    { "name" : "2-X", "value" : item.odds[4].subgames[7].value},
+                    { "name" : "2-2", "value" : item.odds[4].subgames[8].value}
+                ];
+
+                pushHistory(item.matchId, $historyItems);
 
                 $searchResult = {
                     odds: []
                 };
 
-//                xhr = new XMLHttpRequestpRequest();
                 fd = new FormData();
 
                 fd.append('_token', '{{ csrf_token() }}');
                 fd.append('item', JSON.stringify(item));
-
-//                xhr.onreadystatechange = function () {
-//
-//                };
-
-                {{--xhr.open('POST', '{{ URL::route('offer.search') }}');--}}
-//                xhr.send(fd);
-
 
                 $.ajax({
                     url: '{{ URL::route('offer.search') }}',
@@ -233,10 +702,8 @@
                     }
                 });
 
-//                return;
-
                 $table.append(
-                        $('<tr/>').append(
+                        $('<tr/>').attr('data-id', item.matchId).append(
                                 $('<td/>').text($hours + ":" + $minutes)
                         ).append(
                                 $('<td/>').text(item.minute)
@@ -251,37 +718,37 @@
                         ).append(
                                 $('<td/>').text(($searchResult.hasOwnProperty('count')) ? $searchResult.count : "No result")
                         ).append(
-                                $('<td/>').text(item.odds[0].subgames[0].value)
+                                $('<td/>').attr({ 'class' : '1' }).text(item.odds[0].subgames[0].value)
                         ).append(
                                 $('<td/>').text(($searchResult.odds.length > 0) ? calcPercent($searchResult.count, $searchResult.odds[0].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
-                                $('<td/>').text(item.odds[0].subgames[1].value)
+                                $('<td/>').attr({ 'class' : 'X' }).text(item.odds[0].subgames[1].value)
                         ).append(
                                 $('<td/>').text(($searchResult.odds.length > 1) ? calcPercent($searchResult.count, $searchResult.odds[1].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
-                                $('<td/>').text(item.odds[0].subgames[2].value)
+                                $('<td/>').attr({ 'class' : '2' }).text(item.odds[0].subgames[2].value)
                         ).append(
                                 $('<td/>').text(($searchResult.odds.length > 2) ? calcPercent($searchResult.count, $searchResult.odds[2].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
-                                $('<td/>').text(item.odds[1].subgames[0].value)
+                                $('<td/>').attr({ 'class' : '1X' }).text(item.odds[1].subgames[0].value)
                         ).append(
                                 $('<td/>').text(($searchResult.odds.length > 3) ? calcPercent($searchResult.count, $searchResult.odds[3].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
-                                $('<td/>').text(item.odds[1].subgames[1].value)
+                                $('<td/>').attr({ 'class' : '12' }).text(item.odds[1].subgames[1].value)
                         ).append(
                                 $('<td/>').text(($searchResult.odds.length > 4) ? calcPercent($searchResult.count, $searchResult.odds[4].win_count) : "").css({
                                     color: "red"
                                 })
                         ).append(
-                                $('<td/>').text(item.odds[1].subgames[2].value)
+                                $('<td/>').attr({ 'class' : 'X2' }).text(item.odds[1].subgames[2].value)
                         ).append(
                                 $('<td/>').text(($searchResult.odds.length > 5) ? calcPercent($searchResult.count, $searchResult.odds[5].win_count) : "").css({
                                     color: "red"
