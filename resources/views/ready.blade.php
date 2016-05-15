@@ -259,7 +259,7 @@
                                 width: 'auto',
                                 height: 'auto',
                                 background: backgroundColor,
-                                position: 'relative',
+                                position: 'absolute',
                                 bottom: 20,
                                 'z-index': 10000,
                                 padding: 5
@@ -315,7 +315,7 @@
                                 width: 'auto',
                                 height: 'auto',
                                 background: backgroundColor,
-                                position: 'relative',
+                                position: 'absolute',
                                 bottom: 20,
                                 'z-index': 10000,
                                 padding: 5
@@ -371,7 +371,7 @@
                                 width: 'auto',
                                 height: 'auto',
                                 background: backgroundColor,
-                                position: 'relative',
+                                position: 'absolute',
                                 bottom: 20,
                                 'z-index': 10000,
                                 padding: 5
@@ -426,7 +426,7 @@
                                 width: 'auto',
                                 height: 'auto',
                                 background: backgroundColor,
-                                position: 'relative',
+                                position: 'absolute',
                                 bottom: 20,
                                 'z-index': 10000,
                                 padding: 5
@@ -481,7 +481,7 @@
                                 width: 'auto',
                                 height: 'auto',
                                 background: backgroundColor,
-                                position: 'relative',
+                                position: 'absolute',
                                 bottom: 20,
                                 'z-index': 10000,
                                 padding: 5
@@ -536,7 +536,7 @@
                                 width: 'auto',
                                 height: 'auto',
                                 background: backgroundColor,
-                                position: 'relative',
+                                position: 'absolute',
                                 bottom: 20,
                                 'z-index': 10000,
                                 padding: 5
