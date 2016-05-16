@@ -674,7 +674,7 @@
                 $hours = ($date.getHours() < 10) ? "0" + $date.getHours() : $date.getHours();
                 $minutes = ($date.getMinutes() < 10) ? "0" + $date.getMinutes() : $date.getMinutes();
 
-                if(item.odds[0].subgames[0].bettingGameId === 1 && item.odds[1].subgames[0].bettingGameId === 2 && item.odds[4].subgames[0].bettingGameId === 5){
+                if(item.odds.length >= 5 && item.odds[0].subgames[0].bettingGameId === 1 && item.odds[1].subgames[0].bettingGameId === 2 && item.odds[4].subgames[0].bettingGameId === 5){
                     $historyItems = [
                         { "name" : "1", "value" : (item.odds[0].subgames[0].hasOwnProperty('value')) ? item.odds[0].subgames[0].value : ''},
                         { "name" : "X", "value" : (item.odds[0].subgames[1].hasOwnProperty('value')) ? item.odds[0].subgames[1].value : ''},
@@ -694,7 +694,7 @@
                     ];
     
                     pushHistory(item.matchId, $historyItems);
-                }
+                
 
                 $searchResult = {
                     odds: []
@@ -720,115 +720,116 @@
                     });
 //                }
 
-                done = true;
-
-                $table.append(
-                        $('<tr/>').attr('data-id', item.matchId).append(
-                                $('<td/>').text($hours + ":" + $minutes)
-                        ).append(
-                                $('<td/>').text(item.minute)
-                        ).append(
-                                $('<td/>').text(item.competition.shortName)
-                        ).append(
-                                $('<td/>').text(item.home)
-                        ).append(
-                                $('<td/>').text(item.visitor)
-                        ).append(
-                                $('<td/>').text(item.result)
-                        ).append(
-                                $('<td/>').text(($searchResult.hasOwnProperty('count')) ? $searchResult.count : "No result")
-                        ).append(
-                                $('<td/>').attr({ 'class' : '1' }).css({ position: 'relative'}).text(item.odds[0].subgames[0].value)
-                        ).append(
-                                $('<td/>').text(($searchResult.odds.length > 0) ? calcPercent($searchResult.count, $searchResult.odds[0].win_count) : "").css({
-                                    color: "red"
-                                })
-                        ).append(
-                                $('<td/>').attr({ 'class' : 'X' }).css({ position: 'relative'}).text(item.odds[0].subgames[1].value)
-                        ).append(
-                                $('<td/>').text(($searchResult.odds.length > 1) ? calcPercent($searchResult.count, $searchResult.odds[1].win_count) : "").css({
-                                    color: "red"
-                                })
-                        ).append(
-                                $('<td/>').attr({ 'class' : '2' }).css({ position: 'relative'}).text(item.odds[0].subgames[2].value)
-                        ).append(
-                                $('<td/>').text(($searchResult.odds.length > 2) ? calcPercent($searchResult.count, $searchResult.odds[2].win_count) : "").css({
-                                    color: "red"
-                                })
-                        ).append(
-                                $('<td/>').attr({ 'class' : '1X' }).css({ position: 'relative'}).text(item.odds[1].subgames[0].value)
-                        ).append(
-                                $('<td/>').text(($searchResult.odds.length > 3) ? calcPercent($searchResult.count, $searchResult.odds[3].win_count) : "").css({
-                                    color: "red"
-                                })
-                        ).append(
-                                $('<td/>').attr({ 'class' : '12' }).css({ position: 'relative'}).text(item.odds[1].subgames[1].value)
-                        ).append(
-                                $('<td/>').text(($searchResult.odds.length > 4) ? calcPercent($searchResult.count, $searchResult.odds[4].win_count) : "").css({
-                                    color: "red"
-                                })
-                        ).append(
-                                $('<td/>').attr({ 'class' : 'X2' }).css({ position: 'relative'}).text(item.odds[1].subgames[2].value)
-                        ).append(
-                                $('<td/>').text(($searchResult.odds.length > 5) ? calcPercent($searchResult.count, $searchResult.odds[5].win_count) : "").css({
-                                    color: "red"
-                                })
-                        ).append(
-                                $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[0].value : '')
-                        ).append(
-                                $('<td/>').text(($searchResult.odds.length > 6) ? calcPercent($searchResult.count, $searchResult.odds[6].win_count) : "").css({
-                                    color: "red"
-                                })
-                        ).append(
-                                $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[1].value : '')
-                        ).append(
-                                $('<td/>').text(($searchResult.odds.length > 7) ? calcPercent($searchResult.count, $searchResult.odds[7].win_count) : "").css({
-                                    color: "red"
-                                })
-                        ).append(
-                                $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[2].value : '')
-                        ).append(
-                                $('<td/>').text(($searchResult.odds.length > 8) ? calcPercent($searchResult.count, $searchResult.odds[8].win_count) : "").css({
-                                    color: "red"
-                                })
-                        ).append(
-                                $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[3].value : '')
-                        ).append(
-                                $('<td/>').text(($searchResult.odds.length > 9) ? calcPercent($searchResult.count, $searchResult.odds[9].win_count) : "").css({
-                                    color: "red"
-                                })
-                        ).append(
-                                $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[4].value : '')
-                        ).append(
-                                $('<td/>').text(($searchResult.odds.length > 10) ? calcPercent($searchResult.count, $searchResult.odds[10].win_count) : "").css({
-                                    color: "red"
-                                })
-                        ).append(
-                                $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[5].value : '')
-                        ).append(
-                                $('<td/>').text(($searchResult.odds.length > 11) ? calcPercent($searchResult.count, $searchResult.odds[11].win_count) : "").css({
-                                    color: "red"
-                                })
-                        ).append(
-                                $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[6].value : '')
-                        ).append(
-                                $('<td/>').text(($searchResult.odds.length > 12) ? calcPercent($searchResult.count, $searchResult.odds[12].win_count) : "").css({
-                                    color: "red"
-                                })
-                        ).append(
-                                $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[7].value : '')
-                        ).append(
-                                $('<td/>').text(($searchResult.odds.length > 13) ? calcPercent($searchResult.count, $searchResult.odds[13].win_count) : "").css({
-                                    color: "red"
-                                })
-                        ).append(
-                                $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[8].value : '')
-                        ).append(
-                                $('<td/>').text(($searchResult.odds.length > 14) ? calcPercent($searchResult.count, $searchResult.odds[14].win_count) : "").css({
-                                    color: "red"
-                                })
-                        )
-                );
+                    done = true;
+    
+                    $table.append(
+                            $('<tr/>').attr('data-id', item.matchId).append(
+                                    $('<td/>').text($hours + ":" + $minutes)
+                            ).append(
+                                    $('<td/>').text(item.minute)
+                            ).append(
+                                    $('<td/>').text(item.competition.shortName)
+                            ).append(
+                                    $('<td/>').text(item.home)
+                            ).append(
+                                    $('<td/>').text(item.visitor)
+                            ).append(
+                                    $('<td/>').text(item.result)
+                            ).append(
+                                    $('<td/>').text(($searchResult.hasOwnProperty('count')) ? $searchResult.count : "No result")
+                            ).append(
+                                    $('<td/>').attr({ 'class' : '1' }).css({ position: 'relative'}).text(item.odds[0].subgames[0].value)
+                            ).append(
+                                    $('<td/>').text(($searchResult.odds.length > 0) ? calcPercent($searchResult.count, $searchResult.odds[0].win_count) : "").css({
+                                        color: "red"
+                                    })
+                            ).append(
+                                    $('<td/>').attr({ 'class' : 'X' }).css({ position: 'relative'}).text(item.odds[0].subgames[1].value)
+                            ).append(
+                                    $('<td/>').text(($searchResult.odds.length > 1) ? calcPercent($searchResult.count, $searchResult.odds[1].win_count) : "").css({
+                                        color: "red"
+                                    })
+                            ).append(
+                                    $('<td/>').attr({ 'class' : '2' }).css({ position: 'relative'}).text(item.odds[0].subgames[2].value)
+                            ).append(
+                                    $('<td/>').text(($searchResult.odds.length > 2) ? calcPercent($searchResult.count, $searchResult.odds[2].win_count) : "").css({
+                                        color: "red"
+                                    })
+                            ).append(
+                                    $('<td/>').attr({ 'class' : '1X' }).css({ position: 'relative'}).text(item.odds[1].subgames[0].value)
+                            ).append(
+                                    $('<td/>').text(($searchResult.odds.length > 3) ? calcPercent($searchResult.count, $searchResult.odds[3].win_count) : "").css({
+                                        color: "red"
+                                    })
+                            ).append(
+                                    $('<td/>').attr({ 'class' : '12' }).css({ position: 'relative'}).text(item.odds[1].subgames[1].value)
+                            ).append(
+                                    $('<td/>').text(($searchResult.odds.length > 4) ? calcPercent($searchResult.count, $searchResult.odds[4].win_count) : "").css({
+                                        color: "red"
+                                    })
+                            ).append(
+                                    $('<td/>').attr({ 'class' : 'X2' }).css({ position: 'relative'}).text(item.odds[1].subgames[2].value)
+                            ).append(
+                                    $('<td/>').text(($searchResult.odds.length > 5) ? calcPercent($searchResult.count, $searchResult.odds[5].win_count) : "").css({
+                                        color: "red"
+                                    })
+                            ).append(
+                                    $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[0].value : '')
+                            ).append(
+                                    $('<td/>').text(($searchResult.odds.length > 6) ? calcPercent($searchResult.count, $searchResult.odds[6].win_count) : "").css({
+                                        color: "red"
+                                    })
+                            ).append(
+                                    $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[1].value : '')
+                            ).append(
+                                    $('<td/>').text(($searchResult.odds.length > 7) ? calcPercent($searchResult.count, $searchResult.odds[7].win_count) : "").css({
+                                        color: "red"
+                                    })
+                            ).append(
+                                    $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[2].value : '')
+                            ).append(
+                                    $('<td/>').text(($searchResult.odds.length > 8) ? calcPercent($searchResult.count, $searchResult.odds[8].win_count) : "").css({
+                                        color: "red"
+                                    })
+                            ).append(
+                                    $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[3].value : '')
+                            ).append(
+                                    $('<td/>').text(($searchResult.odds.length > 9) ? calcPercent($searchResult.count, $searchResult.odds[9].win_count) : "").css({
+                                        color: "red"
+                                    })
+                            ).append(
+                                    $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[4].value : '')
+                            ).append(
+                                    $('<td/>').text(($searchResult.odds.length > 10) ? calcPercent($searchResult.count, $searchResult.odds[10].win_count) : "").css({
+                                        color: "red"
+                                    })
+                            ).append(
+                                    $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[5].value : '')
+                            ).append(
+                                    $('<td/>').text(($searchResult.odds.length > 11) ? calcPercent($searchResult.count, $searchResult.odds[11].win_count) : "").css({
+                                        color: "red"
+                                    })
+                            ).append(
+                                    $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[6].value : '')
+                            ).append(
+                                    $('<td/>').text(($searchResult.odds.length > 12) ? calcPercent($searchResult.count, $searchResult.odds[12].win_count) : "").css({
+                                        color: "red"
+                                    })
+                            ).append(
+                                    $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[7].value : '')
+                            ).append(
+                                    $('<td/>').text(($searchResult.odds.length > 13) ? calcPercent($searchResult.count, $searchResult.odds[13].win_count) : "").css({
+                                        color: "red"
+                                    })
+                            ).append(
+                                    $('<td/>').text((item.odds.hasOwnProperty(4)) ? item.odds[4].subgames[8].value : '')
+                            ).append(
+                                    $('<td/>').text(($searchResult.odds.length > 14) ? calcPercent($searchResult.count, $searchResult.odds[14].win_count) : "").css({
+                                        color: "red"
+                                    })
+                            )
+                    );
+                }
             });
         }
 
