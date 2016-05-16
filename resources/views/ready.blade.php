@@ -674,25 +674,27 @@
                 $hours = ($date.getHours() < 10) ? "0" + $date.getHours() : $date.getHours();
                 $minutes = ($date.getMinutes() < 10) ? "0" + $date.getMinutes() : $date.getMinutes();
 
-                $historyItems = [
-                    { "name" : "1", "value" : (item.odds[0].subgames[0].hasOwnProperty('value')) ? item.odds[0].subgames[0].value : ''},
-                    { "name" : "X", "value" : (item.odds[0].subgames[1].hasOwnProperty('value')) ? item.odds[0].subgames[1].value : ''},
-                    { "name" : "2", "value" : (item.odds[0].subgames[2].hasOwnProperty('value')) ? item.odds[0].subgames[2].value : ''},
-                    { "name" : "1X", "value" : (item.odds[1].subgames[0].hasOwnProperty('value')) ? item.odds[1].subgames[0].value : ''},
-                    { "name" : "12", "value" : (item.odds[1].subgames[1].hasOwnProperty('value')) ? item.odds[1].subgames[1].value : ''},
-                    { "name" : "X2", "value" : (item.odds[1].subgames[2].hasOwnProperty('value')) ? item.odds[1].subgames[2].value : ''},
-                    { "name" : "1-1", "value" : (item.odds[4].subgames[0].hasOwnProperty('value')) ? item.odds[4].subgames[0].value : ''},
-                    { "name" : "1-X", "value" : (item.odds[4].subgames[1].hasOwnProperty('value')) ? item.odds[4].subgames[1].value : ''},
-                    { "name" : "1-2", "value" : (item.odds[4].subgames[2].hasOwnProperty('value')) ? item.odds[4].subgames[2].value : ''},
-                    { "name" : "X-1", "value" : (item.odds[4].subgames[3].hasOwnProperty('value')) ? item.odds[4].subgames[3].value : ''},
-                    { "name" : "X-X", "value" : (item.odds[4].subgames[4].hasOwnProperty('value')) ? item.odds[4].subgames[4].value : ''},
-                    { "name" : "X-2", "value" : (item.odds[4].subgames[5].hasOwnProperty('value')) ? item.odds[4].subgames[5].value : ''},
-                    { "name" : "2-1", "value" : (item.odds[4].subgames[6].hasOwnProperty('value')) ? item.odds[4].subgames[6].value : ''},
-                    { "name" : "2-X", "value" : (item.odds[4].subgames[7].hasOwnProperty('value')) ? item.odds[4].subgames[7].value : ''},
-                    { "name" : "2-2", "value" : (item.odds[4].subgames[8].hasOwnProperty('value')) ? item.odds[4].subgames[8].value : ''}
-                ];
-
-                pushHistory(item.matchId, $historyItems);
+                if(item.odds[0].subgames[0].bettingGameId === 1 && item.odds[1].subgames[0].bettingGameId === 2 && item.odds[4].subgames[0].bettingGameId === 5){
+                    $historyItems = [
+                        { "name" : "1", "value" : (item.odds[0].subgames[0].hasOwnProperty('value')) ? item.odds[0].subgames[0].value : ''},
+                        { "name" : "X", "value" : (item.odds[0].subgames[1].hasOwnProperty('value')) ? item.odds[0].subgames[1].value : ''},
+                        { "name" : "2", "value" : (item.odds[0].subgames[2].hasOwnProperty('value')) ? item.odds[0].subgames[2].value : ''},
+                        { "name" : "1X", "value" : (item.odds[1].subgames[0].hasOwnProperty('value')) ? item.odds[1].subgames[0].value : ''},
+                        { "name" : "12", "value" : (item.odds[1].subgames[1].hasOwnProperty('value')) ? item.odds[1].subgames[1].value : ''},
+                        { "name" : "X2", "value" : (item.odds[1].subgames[2].hasOwnProperty('value')) ? item.odds[1].subgames[2].value : ''},
+                        { "name" : "1-1", "value" : (item.odds[4].subgames[0].hasOwnProperty('value')) ? item.odds[4].subgames[0].value : ''},
+                        { "name" : "1-X", "value" : (item.odds[4].subgames[1].hasOwnProperty('value')) ? item.odds[4].subgames[1].value : ''},
+                        { "name" : "1-2", "value" : (item.odds[4].subgames[2].hasOwnProperty('value')) ? item.odds[4].subgames[2].value : ''},
+                        { "name" : "X-1", "value" : (item.odds[4].subgames[3].hasOwnProperty('value')) ? item.odds[4].subgames[3].value : ''},
+                        { "name" : "X-X", "value" : (item.odds[4].subgames[4].hasOwnProperty('value')) ? item.odds[4].subgames[4].value : ''},
+                        { "name" : "X-2", "value" : (item.odds[4].subgames[5].hasOwnProperty('value')) ? item.odds[4].subgames[5].value : ''},
+                        { "name" : "2-1", "value" : (item.odds[4].subgames[6].hasOwnProperty('value')) ? item.odds[4].subgames[6].value : ''},
+                        { "name" : "2-X", "value" : (item.odds[4].subgames[7].hasOwnProperty('value')) ? item.odds[4].subgames[7].value : ''},
+                        { "name" : "2-2", "value" : (item.odds[4].subgames[8].hasOwnProperty('value')) ? item.odds[4].subgames[8].value : ''}
+                    ];
+    
+                    pushHistory(item.matchId, $historyItems);
+                }
 
                 $searchResult = {
                     odds: []
